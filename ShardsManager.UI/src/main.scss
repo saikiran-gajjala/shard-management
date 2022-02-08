@@ -1,0 +1,70 @@
+/*
+ * Entry point of global application style.
+ * Component-specific style should not go here and be included directly as part of the components.
+ */
+
+// Theme variables, must be included before the libraries to allow overriding defaults
+@import "theme/theme-variables";
+
+// 3rd party libraries
+@import "~bootstrap/scss/bootstrap";
+@import "~@fortawesome/fontawesome-free/scss/fontawesome.scss";
+@import "~@fortawesome/fontawesome-free/scss/brands.scss";
+@import "~@fortawesome/fontawesome-free/scss/regular.scss";
+@import "~@fortawesome/fontawesome-free/scss/solid.scss";
+
+// Theme customization
+@import "theme/theme";
+
+* {
+  font-size: 16px;
+  font-family: "Segoe UI", "Segoe Script", "Helvetica Neue", Helvetica,
+    sans-serif;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  background-color: #f9f9f9;
+  font-family: "Segoe UI", "Segoe Script", "Helvetica Neue", Helvetica,
+    sans-serif;
+  //font-weight: 300;
+  font-size: 12px;
+  padding: 0;
+  margin: 0;
+  height: 100%;
+}
+
+.p-dialog-content {
+  height: calc(100% - 100px);
+}
+
+.p-dialog .p-dialog-header {
+  border-bottom: 1px solid #eee;
+}
+.p-dialog .p-dialog-footer {
+  border-top: 1px solid #eee;
+}
+
+.p-dialog-header {
+  height: 50px;
+  // background-color: green !important;
+  color: green;
+  font-family: "Segoe UI", "Segoe Script", "Helvetica Neue", Helvetica,
+    sans-serif;
+  border-bottom: 1px solid #dee2e6;
+  padding-top: 1rem;
+}
+
+.p-dialog-title {
+  color: green;
+  font-family: "Segoe UI", "Segoe Script", "Helvetica Neue", Helvetica,
+    sans-serif;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.p-dialog-header-close-icon,
+.p-dialog-header-maximize-icon {
+  color: green;
+}

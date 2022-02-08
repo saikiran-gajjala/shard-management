@@ -1,0 +1,20 @@
+@import "src/theme/theme-variables";
+
+.navbar {
+  margin-bottom: $spacer;
+  background-color: #28a745;
+  height: 60px;
+}
+
+.nav-link.dropdown-toggle {
+  cursor: pointer;
+}
+
+.logo {
+  width: 100px;
+  margin: auto;
+}
+
+.peerislands-logo {
+  border-right: 1px solid #bbbb7f;
+}

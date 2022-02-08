@@ -1,0 +1,9 @@
+-- APIs --
+POST api to validate connection string and get database and collections and sharding statuses
+GET API fectch no of shards and shard sizes -PARTIAL DONE
+GET API Retrive Chunks -DONE
+GET API  size using disk size command
+POST API Prespilt Chunks
+POST API Move Chunks
+POST API Start/Stop balancers -DONE
+POST api to shard a collections -DONE

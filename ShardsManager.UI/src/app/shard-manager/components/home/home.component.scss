@@ -1,0 +1,45 @@
+.logo {
+  width: 100px;
+}
+
+q {
+  font-style: italic;
+  font-size: 1.2rem;
+  quotes: "« " " »";
+}
+
+.shard-home {
+  height: calc(100vh - 8rem);
+  width: 100%;
+  top: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+}
+
+:host::ng-deep .p-sidebar {
+  height: 95% !important;
+  margin-top: 60px;
+  margin-left: 10px;
+}
+
+:host::ng-deep .p-sidebar-close {
+  display: none;
+}
+
+.metadata {
+  border-right: 1px solid #dee2e6 !important;
+}
+
+.full-height {
+  height: 100% !important;
+}
+
+:host ::ng-deep .p-listbox .p-listbox-header .p-checkbox {
+  display: none;
+}
+
+:host ::ng-deep .p-listbox .p-listbox-header {
+  height: 20px;
+}
