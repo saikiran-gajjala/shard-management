@@ -27,9 +27,9 @@ namespace ShardsManager.API.Controllers
     /// </summary>
     /// <returns></returns>
     [HttpGet("{database}/{collection}")]
-    public async Task<IActionResult> GetChunks(string database, string collection)
+    public async Task<IActionResult> GetChunks(string database, string collection, [FromQuery] bool fetchChunkMetadata = false)
     {
-      var chunks = await this.chunksDAL.GetAllChunks(database, collection);
+      var chunks = await this.chunksDAL.GetAllChunks(database, collection, fetchChunkMetadata);
       return new OkObjectResult(chunks);
     }
 
@@ -58,6 +58,30 @@ namespace ShardsManager.API.Controllers
         return new BadRequestResult();
       }
       var result = this.mongoCommandUtils.MoveChunk(database, collection, preSplitMetadata);
+      return new OkObjectResult(result);
+    }
+
+    /// <summary>
+    /// Fetches the maximum size of chunk
+    /// </summary>
+    [HttpGet("chunkMaxSize")]
+    public async Task<IActionResult> GetChunkMaxSize()
+    {
+      var chunkMaxSize = await this.chunksDAL.GetMaxChunkSize();
+      return new OkObjectResult(chunkMaxSize);
+    }
+
+    /// <summary>
+    /// Update the chunks max size
+    /// </summary>
+    [HttpPut("chunkMaxSize/{sizeInMB}")]
+    public async Task<IActionResult> UpdateChunkMaxSize(int sizeInMB)
+    {
+      if (sizeInMB == 0)
+      {
+        return new BadRequestObjectResult("Chunk Size cannot be zero");
+      }
+      var result = await this.chunksDAL.UpdateMaxChunkSize(sizeInMB);
       return new OkObjectResult(result);
     }
   }

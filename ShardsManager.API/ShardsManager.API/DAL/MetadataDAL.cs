@@ -12,12 +12,42 @@ namespace ShardsManager.API.DAL
 {
   public class MetadataDAL : IMetadataDAL
   {
-    private readonly IMongoClient mongoClient;
     private readonly ILogger<MetadataDAL> logger;
-    public MetadataDAL(IMongoClient mongoClient, ILogger<MetadataDAL> logger)
+    private IMongoClient mongoClient;
+
+    public MetadataDAL(ILogger<MetadataDAL> logger)
+    {
+      this.logger = logger;
+    }
+
+    /// <summary>
+    /// Initializes the mongo components
+    /// </summary>
+    public void Initialize(IMongoClient mongoClient)
     {
       this.mongoClient = mongoClient;
-      this.logger = logger;
+    }
+
+    /// <summary>
+    /// Validates the mongodb connection string
+    /// </summary>
+    public async Task<bool> ValidateConnectionString(string connectionString)
+    {
+      try
+      {
+        var databaseName = await this.mongoClient.ListDatabaseNamesAsync();
+        if (databaseName == null)
+        {
+          return false;
+        }
+      }
+      catch (MongoException ex)
+      {
+        this.logger.LogError("Exception while fetching the databases", ex);
+        return false;
+      }
+
+      return true;
     }
 
     /// <summary>

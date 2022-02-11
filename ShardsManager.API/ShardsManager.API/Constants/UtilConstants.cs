@@ -6,6 +6,7 @@ namespace ShardsManager.API.Constants
     public const string StringType = "String";
     public const string MinKeyType = "MinKey";
     public const string MaxKeyType = "MaxKey";
+    public const string DateTime = "DateTime";
     public const string AdminDatabase = "admin";
 
   }

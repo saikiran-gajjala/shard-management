@@ -19,6 +19,12 @@ namespace ShardsManager.API.Models
 
     [BsonElement(ChunkConstants.Max)]
     public List<Range> Max { get; set; } = new List<Range>();
+
+    [BsonElement(ChunkConstants.Shard)]
+    public double SizeInMB { get; set; }
+
+    [BsonElement(ChunkConstants.Shard)]
+    public long NoOfObjects { get; set; }
   }
 
   public class Range

@@ -4,7 +4,7 @@ import { TranslateModule } from '@ngx-translate/core';
 
 import { SharedModule } from '@shared';
 import { HomeRoutingModule } from './home-routing.module';
-import { HomeComponent } from './home.component';
+import { HomeComponent } from '../components/home/home.component';
 import { SidebarModule } from 'primeng/sidebar';
 import { ListboxModule } from 'primeng/listbox';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -25,6 +25,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { PaginatorModule } from 'primeng/paginator';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ShardManagerService } from '../services/shard-manager.service';
+import { ShardsComponent } from './shards/shards.component';
 
 @NgModule({
   imports: [
@@ -53,7 +54,7 @@ import { ShardManagerService } from '../services/shard-manager.service';
     PaginatorModule,
     ListboxModule,
   ],
-  declarations: [HomeComponent],
+  declarations: [HomeComponent, ShardsComponent],
   exports: [
     FormsModule,
     ButtonModule,
@@ -76,4 +77,4 @@ import { ShardManagerService } from '../services/shard-manager.service';
   ],
   providers: [MessageService, ShardManagerService, ConfirmationService],
 })
-export class HomeModule {}
+export class HomeModule { }

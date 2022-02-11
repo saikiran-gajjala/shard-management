@@ -12,3 +12,4 @@ export * from './shardMetadata';
 export * from './CollectionShardStatus';
 export * from './shardKey';
 export * from './bsonType';
+export * from './mongoConnectionResponse'

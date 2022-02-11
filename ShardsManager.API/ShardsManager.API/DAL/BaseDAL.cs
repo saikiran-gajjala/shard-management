@@ -10,9 +10,13 @@ namespace ShardsManager.API.DAL
 {
   public class BaseDAL
   {
-    private readonly IMongoDatabase mongodataBase;
-    private readonly IMongoCollection<BsonDocument> collectionsCollection;
-    public BaseDAL(IMongoClient mongoClient)
+    private IMongoDatabase mongodataBase;
+    private IMongoCollection<BsonDocument> collectionsCollection;
+
+    /// <summary>
+    /// Initializes the mongo components
+    /// </summary>
+    internal void Initialize(IMongoClient mongoClient)
     {
       this.mongodataBase = mongoClient.GetDatabase(CommonConstants.Database);
       var databaseWithWriteConcern = this.mongodataBase.WithWriteConcern(WriteConcern.WMajority).WithReadConcern(ReadConcern.Majority);
@@ -22,7 +26,7 @@ namespace ShardsManager.API.DAL
     /// <summary>
     /// Fetches the metadata of all collections in mongodb
     /// </summary>
-    public async Task<List<ConfigCollection>> GetCollectionShards()
+    internal async Task<List<ConfigCollection>> GetCollectionShards()
     {
       var collectionDtosCursor = await this.collectionsCollection.FindAsync(new BsonDocument());
       var collDtos = collectionDtosCursor.ToList();
@@ -53,7 +57,7 @@ namespace ShardsManager.API.DAL
         configCol.ShardKeys = shardKeyElements.Select(x => new ShardKey
         {
           Name = x.Name,
-          IndexType = x.Value.ToString()
+          IndexType = x.Value.AsInt32
         }).ToList();
         configCol.DistributionMode = MetadataConstants.Sharded;
       }

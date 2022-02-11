@@ -1,0 +1,166 @@
+<div class="container-fluid table-container">
+  <div class="row w-100 container-row full-height">
+    <div class="col-sm-3 metadata">
+      <h5 style="font-weight: bold; margin-top: 10px">MongoDB Shards</h5>
+      <p-listbox [options]="shards" aria-readonly="true" optionLabel="id"></p-listbox>
+      <hr />
+
+      <h5 style="font-weight: bold; margin-top: 30px">Cluster Type</h5>
+      <div class="flex-fill">
+        {{ clusterType }}
+      </div>
+      <hr />
+
+      <h5 style="font-weight: bold; margin-top: 30px">Databases</h5>
+      <p-dropdown [options]="dbMetadata" [(ngModel)]="selectedDatabase" optionLabel="database"
+        (onChange)="onDatabaseChange()" [style]="{ width: '100%', height: '2.5rem', 'padding-left': '0.5rem' }">
+      </p-dropdown>
+      <label class="dialog-p" style="font-weight: bold; margin-top: 10px">Shard Status: {{ selectedDatabaseShardState
+        }}</label>
+      <button *ngIf="selectedDatabaseShardState !== 'Sharded'" pButton type="button" label="Shard Database" [style]="{
+          width: '55%',
+          height: '2.2rem',
+          'padding-left': '0.5rem',
+          'margin-top': '20px'
+        }" (click)="enableDatabaseSharding()"></button>
+      <hr />
+
+      <h5 style="font-weight: bold; margin-top: 30px">Collections</h5>
+      <p-dropdown [options]="collectionsMetadata" [(ngModel)]="selectedCollection" optionLabel="collectionName"
+        (onChange)="onCollectionChange()" [style]="{ width: '100%', height: '2.5rem', 'padding-left': '0.5rem' }">
+      </p-dropdown>
+      <label class="dialog-p" style="font-weight: bold; margin-top: 10px">Shard Status: {{ selectedCollectionShardState
+        }}</label>
+      <label *ngIf="selectedCollectionShardKey !== ''" class="dialog-p"
+        style="font-weight: bold; margin-top: 10px">Shard Key: {{ selectedCollectionShardKey }}</label>
+      <hr />
+
+      <h5 style="font-weight: bold; margin-top: 30px">Indexes</h5>
+      <p-dropdown [options]="indexes" [(ngModel)]="selectedIndex" optionLabel="value"
+        [style]="{ width: '100%', height: '2.5rem', 'padding-left': '0.5rem' }">
+      </p-dropdown>
+
+      <button *ngIf="selectedCollectionShardState !== 'Sharded' && selectedIndex" pButton type="button"
+        label="Shard Collection" [style]="{
+          width: '55%',
+          height: '2.2rem',
+          'padding-left': '0.5rem',
+          'margin-top': '20px'
+        }" (click)="enableCollectionSharding()"></button>
+
+      <button *ngIf="selectedCollectionShardState === 'Sharded' && selectedIndex" pButton type="button"
+        label="View Chunks" [style]="{
+          width: '45%',
+          height: '2.2rem',
+          'padding-left': '0.5rem',
+          'margin-top': '20px'
+        }" (click)="viewChunks()"></button>
+      <hr />
+    </div>
+    <div class="col-md-7 col-sm-12">
+      <div *ngIf="displayChunks" class="h-100">
+        <div class="row ml-2">
+          <div class="d-flex justify-content-center" [style]="{ 'text-align': 'center' }">
+            <h5 class="col" style="font-weight: bold; margin-top: 10px">
+              Chunks
+            </h5>
+            <button pButton class="p-button-rounded p-button-outlined p-button-text p-button-primary float-right"
+              pTooltip="Edit/Split Chunks" icon="pi pi-pencil" iconPos="right" (click)="onSplitChunksClick()"></button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col" *ngFor="let shardMetadata of shardsMetadata">
+            <div [style]="{
+                height: '100%',
+                width: '400px',
+                'margin-left': '0.1rem'
+              }">
+              <p-listbox [options]="shardMetadata.chunkRange" [checkbox]="true" [multiple]="true" [listStyle]="{
+                  'max-height': '700px',
+                  height: '700px',
+                  width: '400px',
+                  'font-size': 'small'
+                }">
+                <ng-template pTemplate="header" [ngStyle]="{ height: '1rem' }">
+                  <h5 style="
+                      font-weight: bold;
+                      padding-top: 10px;
+                      text-align: center;
+                      height: 20px;
+                    ">
+                    {{ shardMetadata.shardName }}
+                  </h5>
+                </ng-template>
+              </p-listbox>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div>
+  <p-dialog [(visible)]="showEditChunksDialog" [style]="{ width: '50rem' }" [keepInViewport]="true"
+    [maximizable]="true">
+    <p-header>
+      <h5>Edit/Split Chunks</h5>
+    </p-header>
+    <div class="container pt-3">
+      <div class="d-flex justify-content-between" [style]="{ 'text-align': 'center' }">
+        <label class="dialog-p" style="font-weight: bold; margin-top: 10px">Auto Balancer Status : {{ autoBalancerStatus
+          }}</label>
+        <button pButton type="button" [(label)]="balancerButtonLabel" [style]="{
+            width: '10rem',
+            height: '2.2rem',
+            'padding-right': '0.5rem',
+            'margin-right': '0.5rem'
+          }" (click)="modifyBalancerState()"></button>
+      </div>
+      <hr />
+      <label class="dialog-p" style="font-weight: bold; margin-top: 5px">Split Chunks</label>
+      <div>
+        <div class="form-group">
+          <label class="dialog-p" for="loopStart">Loop Start Position</label>
+          <input type="text" class="form-control" class="form-control" pTooltip="Enter the start position of the loop"
+            [(ngModel)]="loopStart" />
+        </div>
+        <div class="form-group">
+          <label class="dialog-p" for="loopEnd">Loop End Position</label>
+          <input type="text" class="form-control" class="form-control" pTooltip="Enter the end position of the loop"
+            [(ngModel)]="loopEnd" />
+        </div>
+        <div class="mt-2" *ngFor="let key of shardKey">
+          <label class="dialog-p" style="font-weight: small; margin-top: 2px">Shard Key Field : {{ key.name }}</label>
+          <p-dropdown [options]="bsonTypes" [(ngModel)]="key.bsonType" optionLabel="name" placeholder="Select"
+            (onChange)="onBsonTypeChange(key)" [style]="{
+              width: '100%',
+              height: '2.5rem',
+              'padding-left': '0.5rem'
+            }">
+          </p-dropdown>
+          <input [style]="{ 'margin-top': '0.5rem' }" *ngIf="
+              key.dataType !== 'MaxKey' &&
+              key.dataType !== 'MinKey' &&
+              key.dataType !== 'Int32'
+            " type="text" class="form-control" class="form-control" pTooltip="Enter the value"
+            placeholder="Enter the Value" [(ngModel)]="key.value" />
+        </div>
+        <button pButton type="button" label="Split" [style]="{
+            width: '6rem',
+            height: '2.2rem',
+            'padding-right': '0.5rem',
+            'margin-right': '0.5rem',
+            'margin-top': '0.7rem'
+          }" (click)="splitChunk()"></button>
+      </div>
+    </div>
+    <p-footer>
+      <div class="pt-4">
+        <!-- <button pButton type="button" label="Save" icon="pi pi-check p-button-sm" (click)="addNewProperty()"></button> -->
+        <button pButton type="button" label="Cancel" icon="pi pi-times p-button-sm"
+          (click)="displaySplitChunksDialog(false)"></button>
+      </div>
+    </p-footer>
+  </p-dialog>
+</div>

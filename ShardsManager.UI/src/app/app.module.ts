@@ -7,7 +7,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { CoreModule } from '@core';
 import { SharedModule } from '@shared';
-import { HomeModule } from './shard-manager/components/home/home.module';
+import { HomeModule } from '../app/shard-manager/components/home.module';
 import { ShellModule } from './shell/shell.module';
 import { AboutModule } from './about/about.module';
 import { AppComponent } from './app.component';
@@ -33,4 +33,4 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   providers: [],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

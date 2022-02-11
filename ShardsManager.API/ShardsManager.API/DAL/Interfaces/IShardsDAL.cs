@@ -1,4 +1,5 @@
-﻿using ShardsManager.API.Models;
+﻿using MongoDB.Driver;
+using ShardsManager.API.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -9,5 +10,6 @@ namespace ShardsManager.API.DAL.Interfaces
     Task<List<ConfigCollection>> GetCollectionShards();
     Task<List<ConfigDatabase>> GetDatabaseShards();
     Task<List<Shard>> GetShards();
+    void Initialize(IMongoClient mongoClient);
   }
 }

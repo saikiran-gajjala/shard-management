@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Threading;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -13,13 +12,21 @@ namespace ShardsManager.API.Utilities
 {
   public class MongoCommandUtils : IMongoCommondUtils
   {
-    private readonly IMongoDatabase mongodataBase;
     private readonly ILogger<MongoCommandUtils> logger;
+    private IMongoDatabase mongodataBase;
 
-    public MongoCommandUtils(IMongoClient mongoClient, ILogger<MongoCommandUtils> logger)
+
+    public MongoCommandUtils(ILogger<MongoCommandUtils> logger)
+    {
+      this.logger = logger;
+    }
+
+    /// <summary>
+    /// Initializes the mongo components
+    /// </summary>
+    public void Initialize(IMongoClient mongoClient)
     {
       this.mongodataBase = mongoClient.GetDatabase(UtilConstants.AdminDatabase);
-      this.logger = logger;
     }
 
     /// <summary>

@@ -39,15 +39,12 @@ namespace ShardsManager.API
                .AllowAnyMethod()
                .AllowAnyHeader();
       }));
-      services.AddSingleton<IMongoClient>(x =>
-      {
-        BsonDefaults.GuidRepresentation = GuidRepresentation.Standard;
-        return new MongoClient(Configuration["MongoDb-Connection-String"]);
-      });
+      services.AddSingleton(services);
       services.AddSingleton<IChunksDAL, ChunksDAL>();
       services.AddSingleton<IShardsDAL, ShardsDAL>();
       services.AddSingleton<IMetadataDAL, MetadataDAL>();
       services.AddSingleton<IMongoCommondUtils, MongoCommandUtils>();
+      services.AddMemoryCache();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -74,6 +71,7 @@ namespace ShardsManager.API
       app.UseRouting();
 
       app.UseAuthorization();
+      app.UseMongoMiddleware();
 
       app.UseEndpoints(endpoints =>
       {

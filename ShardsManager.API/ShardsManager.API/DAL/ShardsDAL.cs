@@ -15,18 +15,26 @@ namespace ShardsManager.API.DAL
 {
   public class ShardsDAL : BaseDAL, IShardsDAL
   {
-    private readonly IMongoDatabase mongodataBase;
-    private readonly IMongoCollection<BsonDocument> shardsCollection;
-    private readonly IMongoCollection<BsonDocument> databasesCollection;
     private readonly ILogger<ShardsDAL> logger;
+    private IMongoDatabase mongodataBase;
+    private IMongoCollection<BsonDocument> shardsCollection;
+    private IMongoCollection<BsonDocument> databasesCollection;
 
-    public ShardsDAL(IMongoClient mongoClient, ILogger<ShardsDAL> logger) : base(mongoClient)
+    public ShardsDAL(ILogger<ShardsDAL> logger)
+    {
+      this.logger = logger;
+    }
+
+    /// <summary>
+    /// Initializes the mongo components
+    /// </summary>
+    public new void Initialize(IMongoClient mongoClient)
     {
       this.mongodataBase = mongoClient.GetDatabase(CommonConstants.Database);
       var databaseWithWriteConcern = this.mongodataBase.WithWriteConcern(WriteConcern.WMajority).WithReadConcern(ReadConcern.Majority);
       this.shardsCollection = databaseWithWriteConcern.GetCollection<BsonDocument>(ShardsConstants.ShardsCollectionName);
       this.databasesCollection = databaseWithWriteConcern.GetCollection<BsonDocument>(ShardsConstants.DatabaseCollectionName);
-      this.logger = logger;
+      base.Initialize(mongoClient);
     }
 
     /// <summary>

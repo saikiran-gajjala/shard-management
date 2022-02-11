@@ -30,6 +30,6 @@ namespace ShardsManager.API.Models
   public class ShardKey
   {
     public string Name { get; set; }
-    public string IndexType { get; set; }
+    public int IndexType { get; set; }
   }
 }
