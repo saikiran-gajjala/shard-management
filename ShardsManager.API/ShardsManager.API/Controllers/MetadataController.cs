@@ -8,6 +8,7 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using ShardsManager.API.DAL.Interfaces;
 using ShardsManager.API.Models;
+using ShardsManager.API.Utilities.Interfaces;
 
 namespace ShardsManager.API.Controllers
 {
@@ -19,13 +20,15 @@ namespace ShardsManager.API.Controllers
     private readonly IMetadataDAL metadataDAL;
     private readonly IMemoryCache memoryCache;
     private readonly IShardsDAL shardsDAL;
+    private readonly IMongoCommondUtils mongoCommandUtils;
 
-    public MetadataController(ILogger<MetadataController> logger, IMetadataDAL metadataDAL, IShardsDAL shardsDAL, IMemoryCache memoryCache)
+    public MetadataController(ILogger<MetadataController> logger, IMetadataDAL metadataDAL, IShardsDAL shardsDAL, IMemoryCache memoryCache, IMongoCommondUtils mongoCommandUtils)
     {
       this._logger = logger;
       this.metadataDAL = metadataDAL;
       this.memoryCache = memoryCache;
       this.shardsDAL = shardsDAL;
+      this.mongoCommandUtils = mongoCommandUtils;
     }
 
     /// <summary>
@@ -97,6 +100,17 @@ namespace ShardsManager.API.Controllers
         }
       }
       return new OkObjectResult(dbMetadatas);
+    }
+
+    /// <summary>
+    /// Fetches the metadata of existing databases, collections and their indexes
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet("collectionStats/{database}/{collection}")]
+    public async Task<IActionResult> GetCollectionStats(string database, string collection)
+    {
+      var stats = this.mongoCommandUtils.GetCollectionStats(database, collection);
+      return new OkObjectResult(stats);
     }
   }
 }

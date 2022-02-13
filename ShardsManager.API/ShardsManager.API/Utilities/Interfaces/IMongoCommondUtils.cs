@@ -11,6 +11,7 @@ namespace ShardsManager.API.Utilities.Interfaces
     bool EnableCollectionSharding(string database, string collection, List<IndexField> indexFields);
     bool EnableDBSharding(string database);
     bool GetBalancerState();
+    CollectionStats GetCollectionStats(string database, string collection);
     void Initialize(IMongoClient mongoClient);
     bool ManageBalancer(bool start);
     bool MoveChunk(string database, string collection, ChunkMetadata chunkMetadata);

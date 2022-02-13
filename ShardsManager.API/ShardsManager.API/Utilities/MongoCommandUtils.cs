@@ -13,6 +13,7 @@ namespace ShardsManager.API.Utilities
   public class MongoCommandUtils : IMongoCommondUtils
   {
     private readonly ILogger<MongoCommandUtils> logger;
+    private IMongoClient mongoClient;
     private IMongoDatabase mongodataBase;
 
 
@@ -26,6 +27,7 @@ namespace ShardsManager.API.Utilities
     /// </summary>
     public void Initialize(IMongoClient mongoClient)
     {
+      this.mongoClient = mongoClient;
       this.mongodataBase = mongoClient.GetDatabase(UtilConstants.AdminDatabase);
     }
 
@@ -126,7 +128,7 @@ namespace ShardsManager.API.Utilities
       var bsonDocument = new BsonDocument(commandDict);
       var commandDoc = new BsonDocumentCommand<BsonDocument>(bsonDocument);
       var response = this.mongodataBase.RunCommand(commandDoc);
-      var state = response.GetElement("mode").Value.AsString != "off";
+      var state = response.GetElement(UtilConstants.Mode).Value.AsString != "off";
       return state;
     }
 
@@ -196,6 +198,47 @@ namespace ShardsManager.API.Utilities
         }
       }
       return true;
+    }
+
+    /// <summary>
+    /// Gets the stats of the collection
+    /// </summary>
+    public CollectionStats GetCollectionStats(string database, string collection)
+    {
+      var db = this.mongoClient.GetDatabase(database);
+      var commandDict = new Dictionary<string, object>
+      {
+        { "collStats", collection }
+      };
+      var bsonDocument = new BsonDocument(commandDict);
+      var commandDoc = new BsonDocumentCommand<BsonDocument>(bsonDocument);
+      var response = db.RunCommand(commandDoc);
+      var shardElements = response.GetElement(UtilConstants.Shards).Value.ToBsonDocument().Elements;
+      var collStats = new CollectionStats
+      {
+        ShardStats = new List<ShardStats>(),
+        NoOfChunks = response.GetElement(UtilConstants.NoOfChunks).Value.AsInt32,
+        DataStorageSize = response.GetElement(UtilConstants.StorageSize).Value.AsInt32,
+        IndexStorageSize = response.GetElement(UtilConstants.TotalIndexSize).Value.AsInt32,
+        NoOfDocuments = response.GetElement(UtilConstants.Count).Value.AsInt32,
+        NoOfIndexes = response.GetElement(UtilConstants.NoOfIndexes).Value.AsInt32,
+        TotalStorageSize = response.GetElement(UtilConstants.TotalSize).Value.AsInt32
+      };
+
+      foreach (var shard in shardElements)
+      {
+        var shardEle = shard.Value.ToBsonDocument();
+        var shardStats = new ShardStats
+        {
+          ShardName = shard.Name,
+          StorageSize = shardEle.GetElement(UtilConstants.StorageSize).Value.AsInt32,
+          FreeStorageSize = shardEle.GetElement(UtilConstants.FreeStorageSize).Value.AsInt32,
+          NoOfDocuments = shardEle.GetElement(UtilConstants.Count).Value.AsInt32
+        };
+        collStats.ShardStats.Add(shardStats);
+      }
+
+      return collStats;
     }
 
     private static void FetchChunkRange(ChunkMetadata preSplitMetadata, int x, Dictionary<string, object> ranges, Range chunkRange)
