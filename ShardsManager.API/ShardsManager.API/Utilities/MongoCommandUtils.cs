@@ -216,14 +216,38 @@ namespace ShardsManager.API.Utilities
       var shardElements = response.GetElement(UtilConstants.Shards).Value.ToBsonDocument().Elements;
       var collStats = new CollectionStats
       {
-        ShardStats = new List<ShardStats>(),
-        NoOfChunks = response.GetElement(UtilConstants.NoOfChunks).Value.AsInt32,
-        DataStorageSize = response.GetElement(UtilConstants.StorageSize).Value.AsInt32,
-        IndexStorageSize = response.GetElement(UtilConstants.TotalIndexSize).Value.AsInt32,
-        NoOfDocuments = response.GetElement(UtilConstants.Count).Value.AsInt32,
-        NoOfIndexes = response.GetElement(UtilConstants.NoOfIndexes).Value.AsInt32,
-        TotalStorageSize = response.GetElement(UtilConstants.TotalSize).Value.AsInt32
+        ShardStats = new List<ShardStats>()
       };
+
+      if (long.TryParse(response.GetElement(UtilConstants.NoOfChunks).Value.ToString(), out long noOfChunks))
+      {
+        collStats.NoOfChunks = noOfChunks;
+      }
+
+      if (long.TryParse(response.GetElement(UtilConstants.StorageSize).Value.ToString(), out long dataStorageSizeInMB))
+      {
+        collStats.DataStorageSizeInMB = (double)dataStorageSizeInMB / 1024 / 1024;
+      }
+
+      if (long.TryParse(response.GetElement(UtilConstants.TotalIndexSize).Value.ToString(), out long indexStorageSizeInMB))
+      {
+        collStats.IndexStorageSizeInMB = (double)indexStorageSizeInMB / 1024 / 1024;
+      }
+
+      if (long.TryParse(response.GetElement(UtilConstants.Count).Value.ToString(), out long noOfDocuments))
+      {
+        collStats.NoOfDocuments = noOfDocuments;
+      }
+
+      if (long.TryParse(response.GetElement(UtilConstants.NoOfIndexes).Value.ToString(), out long noOfIndexes))
+      {
+        collStats.NoOfIndexes = noOfIndexes;
+      }
+
+      if (long.TryParse(response.GetElement(UtilConstants.TotalSize).Value.ToString(), out long totalStorageSizeInMB))
+      {
+        collStats.TotalStorageSizeInMB = (double)totalStorageSizeInMB / 1024 / 1024;
+      }
 
       foreach (var shard in shardElements)
       {
@@ -231,10 +255,22 @@ namespace ShardsManager.API.Utilities
         var shardStats = new ShardStats
         {
           ShardName = shard.Name,
-          StorageSize = shardEle.GetElement(UtilConstants.StorageSize).Value.AsInt32,
-          FreeStorageSize = shardEle.GetElement(UtilConstants.FreeStorageSize).Value.AsInt32,
-          NoOfDocuments = shardEle.GetElement(UtilConstants.Count).Value.AsInt32
         };
+
+        if (long.TryParse(shardEle.GetElement(UtilConstants.StorageSize).Value.ToString(), out long storageSizeInMB))
+        {
+          shardStats.StorageSizeInMB = (double)storageSizeInMB / 1024 / 1024;
+        }
+
+        if (long.TryParse(shardEle.GetElement(UtilConstants.FreeStorageSize).Value.ToString(), out long freeStorageSizeInMB))
+        {
+          shardStats.FreeStorageSizeInMB = (double)freeStorageSizeInMB / 1024 / 1024;
+        }
+
+        if (long.TryParse(shardEle.GetElement(UtilConstants.Count).Value.ToString(), out long documentCount))
+        {
+          shardStats.NoOfDocuments = documentCount;
+        }
         collStats.ShardStats.Add(shardStats);
       }
 

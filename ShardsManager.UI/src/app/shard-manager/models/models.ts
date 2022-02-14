@@ -13,3 +13,4 @@ export * from './CollectionShardStatus';
 export * from './shardKey';
 export * from './bsonType';
 export * from './mongoConnectionResponse'
+export * from './collectionStats'

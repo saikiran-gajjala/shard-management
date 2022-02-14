@@ -26,6 +26,9 @@ import { PaginatorModule } from 'primeng/paginator';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ShardManagerService } from '../services/shard-manager.service';
 import { ShardsComponent } from './shards/shards.component';
+import { ShardsGridViewComponent } from './shards-grid-view/shards-grid-view.component';
+import { ShardCardComponent } from './shard-card/shard-card.component';
+import { ShardMetadataComponent } from './shard-metadata/shard-metadata.component';
 
 @NgModule({
   imports: [
@@ -54,7 +57,7 @@ import { ShardsComponent } from './shards/shards.component';
     PaginatorModule,
     ListboxModule,
   ],
-  declarations: [HomeComponent, ShardsComponent],
+  declarations: [HomeComponent, ShardsComponent, ShardsGridViewComponent, ShardCardComponent, ShardMetadataComponent],
   exports: [
     FormsModule,
     ButtonModule,

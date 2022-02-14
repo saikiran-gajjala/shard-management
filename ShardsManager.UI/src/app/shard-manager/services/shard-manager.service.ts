@@ -41,6 +41,14 @@ export class ShardManagerService {
       { headers });
   }
 
+  fetchCollectionStats(database: string, collection: string, connectionId: string): Observable<models.CollectionStats> {
+    const headers = new HttpHeaders({ connectionId: connectionId });
+    return this.http.get<models.CollectionStats>(
+      `${this.baserUrl}/metadata/collectionStats/${database}/${collection}`
+      ,
+      { headers });
+  }
+
   fetchCollectionShardStatus(
     database: string,
     collection: string,

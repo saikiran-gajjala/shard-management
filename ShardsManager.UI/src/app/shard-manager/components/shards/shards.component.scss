@@ -6,6 +6,45 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: stretch;
+  .shard-title {
+    .icon {
+      width: 28px;
+      height: 28px;
+    }
+    .title {
+      font-size: 1.8rem;
+      font-weight: 400;
+      color: gray;
+    }
+  }
+
+  .page-content {
+    min-height: 95%;
+    height: 95%;
+    aside {
+      min-width: 20rem !important;
+      width: 20rem;
+      padding-left: 0.25rem;
+    }
+    main {
+      height: 100%;
+      flex: 1;
+      overflow: auto;
+    }
+  }
+}
+
+.container,
+.container-fluid,
+.container-lg,
+.container-md,
+.container-sm,
+.container-xl {
+  width: 100%;
+  padding-right: 0px;
+  padding-left: 0px;
+  margin-right: 0px;
+  margin-left: 0px;
 }
 
 :host::ng-deep .p-sidebar {

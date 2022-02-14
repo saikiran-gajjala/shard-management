@@ -1,0 +1,43 @@
+.card {
+  padding: 1rem;
+  padding-bottom: 3rem;
+  height: 200px;
+  position: relative;
+  border: 4px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
+  cursor: pointer;
+  h4 {
+    margin-right: 0.25rem;
+    color: #fff;
+    .shardTitle {
+      font-size: 1.5rem;
+      color: #fff;
+    }
+  }
+  .icon {
+    width: 24px;
+    height: 24px;
+  }
+  label {
+    opacity: 0.8;
+    margin-right: 0.25rem;
+  }
+  .stats {
+    margin: 0;
+    padding: 0;
+    margin-left: 23px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: 400;
+    label {
+      font-size: 0.9rem;
+      color: #fff;
+    }
+    .stat {
+      font-size: 1rem;
+      color: #fff;
+    }
+  }
+}

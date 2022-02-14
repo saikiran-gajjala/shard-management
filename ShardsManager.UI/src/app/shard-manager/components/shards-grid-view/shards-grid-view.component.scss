@@ -1,0 +1,41 @@
+@import "../../../../assets/styles/_overrides/variables";
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  .page-subheader {
+    padding: 0.5rem 0.5rem 0.5rem;
+    h4 {
+      color: $ri-heading-color; // $ri-page-header-fg;
+    }
+  }
+  .search {
+    // width: 15rem;
+    input {
+      width: 20rem;
+      height: 2.5rem;
+      padding-left: 0.5rem;
+    }
+  }
+  .main {
+    flex: 1;
+    overflow: auto;
+    .shards {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      .shard {
+        width: 30%;
+        min-width: 18rem;
+        margin: 0.7rem 0.4%;
+        align-self: flex-start;
+        transition: 0.2s;
+        position: relative;
+      }
+      .shard:hover {
+        box-shadow: 0 16px 32px 0 rgba(0, 0, 0, 0.2);
+      }
+    }
+  }
+}

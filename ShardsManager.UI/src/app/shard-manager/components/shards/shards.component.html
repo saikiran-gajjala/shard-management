@@ -1,101 +1,51 @@
-<div class="container-fluid table-container">
-  <div class="row w-100 container-row full-height">
-    <div class="col-sm-3 metadata">
-      <h5 style="font-weight: bold; margin-top: 10px">MongoDB Shards</h5>
-      <p-listbox [options]="shards" aria-readonly="true" optionLabel="id"></p-listbox>
-      <hr />
-
-      <h5 style="font-weight: bold; margin-top: 30px">Cluster Type</h5>
-      <div class="flex-fill">
-        {{ clusterType }}
+<div class="shard-home">
+  <div class="page-header">
+    <div class="container-fluid align-items-center">
+      <div class="d-flex pb-2 justify-content-between">
+        <div class="float-right">
+          <h1 class="d-flex pl-3 pt-2 align-items-center shard-title">
+            <img class="icon" src="../../../../assets/database.png" />
+            <span class="pl-1 title">Shards</span>
+          </h1>
+        </div>
+        <div>
+          <div class="d-flex float-right pr-2">
+            <!-- <button (click)="toggleFilters()" class="btn btn-icon" [ngClass]="{ 'btn-primary': showFilters }">
+              <i class="pi pi-filter"></i>
+              <span>Filters</span>
+            </button> -->
+          </div>
+        </div>
       </div>
-      <hr />
-
-      <h5 style="font-weight: bold; margin-top: 30px">Databases</h5>
-      <p-dropdown [options]="dbMetadata" [(ngModel)]="selectedDatabase" optionLabel="database"
-        (onChange)="onDatabaseChange()" [style]="{ width: '100%', height: '2.5rem', 'padding-left': '0.5rem' }">
-      </p-dropdown>
-      <label class="dialog-p" style="font-weight: bold; margin-top: 10px">Shard Status: {{ selectedDatabaseShardState
-        }}</label>
-      <button *ngIf="selectedDatabaseShardState !== 'Sharded'" pButton type="button" label="Shard Database" [style]="{
-          width: '55%',
-          height: '2.2rem',
-          'padding-left': '0.5rem',
-          'margin-top': '20px'
-        }" (click)="enableDatabaseSharding()"></button>
-      <hr />
-
-      <h5 style="font-weight: bold; margin-top: 30px">Collections</h5>
-      <p-dropdown [options]="collectionsMetadata" [(ngModel)]="selectedCollection" optionLabel="collectionName"
-        (onChange)="onCollectionChange()" [style]="{ width: '100%', height: '2.5rem', 'padding-left': '0.5rem' }">
-      </p-dropdown>
-      <label class="dialog-p" style="font-weight: bold; margin-top: 10px">Shard Status: {{ selectedCollectionShardState
-        }}</label>
-      <label *ngIf="selectedCollectionShardKey !== ''" class="dialog-p"
-        style="font-weight: bold; margin-top: 10px">Shard Key: {{ selectedCollectionShardKey }}</label>
-      <hr />
-
-      <h5 style="font-weight: bold; margin-top: 30px">Indexes</h5>
-      <p-dropdown [options]="indexes" [(ngModel)]="selectedIndex" optionLabel="value"
-        [style]="{ width: '100%', height: '2.5rem', 'padding-left': '0.5rem' }">
-      </p-dropdown>
-
-      <button *ngIf="selectedCollectionShardState !== 'Sharded' && selectedIndex" pButton type="button"
-        label="Shard Collection" [style]="{
-          width: '55%',
-          height: '2.2rem',
-          'padding-left': '0.5rem',
-          'margin-top': '20px'
-        }" (click)="enableCollectionSharding()"></button>
-
-      <button *ngIf="selectedCollectionShardState === 'Sharded' && selectedIndex" pButton type="button"
-        label="View Chunks" [style]="{
-          width: '45%',
-          height: '2.2rem',
-          'padding-left': '0.5rem',
-          'margin-top': '20px'
-        }" (click)="viewChunks()"></button>
-      <hr />
     </div>
-    <div class="col-md-7 col-sm-12">
-      <div *ngIf="displayChunks" class="h-100">
-        <div class="row ml-2">
-          <div class="d-flex justify-content-center" [style]="{ 'text-align': 'center' }">
-            <h5 class="col" style="font-weight: bold; margin-top: 10px">
-              Chunks
-            </h5>
-            <button pButton class="p-button-rounded p-button-outlined p-button-text p-button-primary float-right"
-              pTooltip="Edit/Split Chunks" icon="pi pi-pencil" iconPos="right" (click)="onSplitChunksClick()"></button>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col" *ngFor="let shardMetadata of shardsMetadata">
-            <div [style]="{
-                height: '100%',
-                width: '400px',
-                'margin-left': '0.1rem'
-              }">
-              <p-listbox [options]="shardMetadata.chunkRange" [checkbox]="true" [multiple]="true" [listStyle]="{
-                  'max-height': '700px',
-                  height: '700px',
-                  width: '400px',
-                  'font-size': 'small'
-                }">
-                <ng-template pTemplate="header" [ngStyle]="{ height: '1rem' }">
-                  <h5 style="
-                      font-weight: bold;
-                      padding-top: 10px;
-                      text-align: center;
-                      height: 20px;
-                    ">
-                    {{ shardMetadata.shardName }}
-                  </h5>
-                </ng-template>
-              </p-listbox>
-            </div>
-          </div>
-        </div>
+  </div>
+  <header class="card-header page-subheader d-flex border-bottom align-items-center justify-content-between py-1 pr-1">
+    <div class="d-flex justify-content-start align-items-center" [style]="{ width: '50rem' }">
+      <!-- <div class="search d-flex justify-content-between align-items-center">
+        <i class="pi pi-search pr-1"></i>
+        <input placeholder="Search shards" pInputText (input)="search($event)" />
+      </div> -->
+    </div>
+    <div class="d-flex justify-content-flex-end align-items-center">
+      <div class="mr-2 sort">
+        <!-- <label>Split Chunks: </label> -->
+        <button pButton class="p-button-primary float-right" pTooltip="Split Chunks" label="Split Chunks"
+          iconPos="right" (click)="onSplitChunksClick()"></button>
       </div>
+    </div>
+  </header>
+  <div class="page-content">
+    <div class="container-fluid d-flex align-items-stretch h-100">
+      <aside *ngIf="true">
+        <shard-metadata [connectionId]="connectionId" (databaseChange)="onDatabaseChange($event)"
+          (collectionChange)="onCollectionChange($event)" (collectionStatsChange)="onCollectionStatChange($event)">
+        </shard-metadata>
+      </aside>
+      <main class="card flex-fill">
+        <shards-grid-view *ngIf="shards && shards.length > 0" [style]="{ height: '100%' }" [shards]="shards"
+          [collectionStats]="collectionStats">
+        </shards-grid-view>
+      </main>
     </div>
   </div>
 </div>

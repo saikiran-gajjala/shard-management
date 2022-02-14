@@ -1,0 +1,18 @@
+<div class="card border shadow-sm pt-2" style="background-color: rgb(58 145 165)" (click)="open(shard.id)">
+  <h4 (click)="open(shard.id)" class="name pt-1 d-flex align-items-center">
+    <img class="icon mr-1" src="../../../../assets/database.png" />
+    <label class="shardTitle ml-2">{{ shard.id }}</label>
+  </h4>
+  <p class="stats">
+    <label>Total Size in MB:</label>
+    <span class="stat">{{ shardStats?.storageSizeInMB || 'N/A' }}</span>
+  </p>
+  <p class="stats">
+    <label>Document Count:</label>
+    <span class="stat">{{ shardStats?.noOfDocuments || 'N/A' }}</span>
+  </p>
+  <p class="stats">
+    <label>Chunk Count:</label>
+    <span class="stat">{{ shardStats?.noOfChunks || 'N/A' }}</span>
+  </p>
+</div>

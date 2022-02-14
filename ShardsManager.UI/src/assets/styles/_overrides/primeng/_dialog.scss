@@ -1,0 +1,24 @@
+.p-dialog-header {
+  height: 50px;
+  // background-color: green !important;
+  color: green;
+  font-family: "Segoe UI", "Segoe Script", "Helvetica Neue", Helvetica, sans-serif;
+  border-bottom: 1px solid #dee2e6;
+  padding-top: 1rem;
+}
+
+.p-dialog-title {
+  color: green;
+  font-family: "Segoe UI", "Segoe Script", "Helvetica Neue", Helvetica, sans-serif;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.p-dialog-header-close-icon,
+.p-dialog-header-maximize-icon {
+  color: green;
+}
+
+// .p-dialog-footer {
+//     border-top: 1px solid #dad8d8 !important;
+// }

@@ -1,0 +1,90 @@
+<div class="container-fluid table-container">
+  <div class="row w-100 container-row full-height">
+    <div class="col metadata">
+      <h5 style="font-weight: bold; margin-top: 30px">Databases</h5>
+      <p-dropdown [options]="dbMetadata" [(ngModel)]="selectedDatabase" optionLabel="database"
+        (onChange)="onDatabaseChange()" [style]="{ width: '100%', height: '2.5rem', 'padding-left': '0.5rem' }">
+      </p-dropdown>
+      <label class="dialog-p" style="font-weight: bold; margin-top: 10px">Shard Status: {{ selectedDatabaseShardState
+        }}</label>
+      <button *ngIf="selectedDatabaseShardState !== 'Sharded'" pButton type="button" label="Shard Database" [style]="{
+          width: '100%',
+          height: '2.2rem',
+          'padding-left': '0.5rem',
+          'margin-top': '20px'
+        }" (click)="enableDatabaseSharding()"></button>
+      <hr />
+
+      <h5 style="font-weight: bold; margin-top: 30px">Collections</h5>
+      <p-dropdown [options]="collectionsMetadata" [(ngModel)]="selectedCollection" optionLabel="collectionName"
+        (onChange)="onCollectionChange()" [style]="{ width: '100%', height: '2.5rem', 'padding-left': '0.5rem' }">
+      </p-dropdown>
+      <label class="dialog-p" style="font-weight: bold; margin-top: 10px">Shard Status: {{ selectedCollectionShardState
+        }}</label>
+      <label *ngIf="selectedCollectionShardKey !== ''" class="dialog-p"
+        style="font-weight: bold; margin-top: 10px">Shard Key: {{ selectedCollectionShardKey }}</label>
+      <hr />
+
+      <h5 style="font-weight: bold; margin-top: 30px">Indexes</h5>
+      <p-dropdown [options]="indexes" [(ngModel)]="selectedIndex" optionLabel="value"
+        [style]="{ width: '100%', height: '2.5rem', 'padding-left': '0.5rem' }">
+      </p-dropdown>
+
+      <button *ngIf="selectedCollectionShardState !== 'Sharded' && selectedIndex" pButton type="button"
+        label="Shard Collection" [style]="{
+          width: '100%',
+          height: '2.2rem',
+          'padding-left': '0.5rem',
+          'margin-top': '20px'
+        }" (click)="enableCollectionSharding()"></button>
+
+      <button [disabled]="selectedCollectionShardState !== 'Sharded'" pButton type="button" label="Fetch Metadata"
+        [style]="{
+          width: '100%',
+          height: '2.2rem',
+          'padding-left': '0.5rem',
+          'margin-top': '20px'
+        }" (click)="fetchCollectionStats()"></button>
+      <hr />
+    </div>
+    <div class="col-md-7 col-sm-12">
+      <div *ngIf="displayChunks" class="h-100">
+        <div class="row ml-2">
+          <div class="d-flex justify-content-center" [style]="{ 'text-align': 'center' }">
+            <h5 class="col" style="font-weight: bold; margin-top: 10px">
+              Chunks
+            </h5>
+
+          </div>
+        </div>
+        <div class="row">
+          <div class="col" *ngFor="let shardMetadata of shardsMetadata">
+            <div [style]="{
+                height: '100%',
+                width: '400px',
+                'margin-left': '0.1rem'
+              }">
+              <p-listbox [options]="shardMetadata.chunkRange" [checkbox]="true" [multiple]="true" [listStyle]="{
+                  'max-height': '700px',
+                  height: '700px',
+                  width: '400px',
+                  'font-size': 'small'
+                }">
+                <ng-template pTemplate="header" [ngStyle]="{ height: '1rem' }">
+                  <h5 style="
+                      font-weight: bold;
+                      padding-top: 10px;
+                      text-align: center;
+                      height: 20px;
+                    ">
+                    {{ shardMetadata.shardName }}
+                  </h5>
+                </ng-template>
+              </p-listbox>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

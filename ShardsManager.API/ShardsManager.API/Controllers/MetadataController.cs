@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
@@ -21,24 +22,26 @@ namespace ShardsManager.API.Controllers
     private readonly IMemoryCache memoryCache;
     private readonly IShardsDAL shardsDAL;
     private readonly IMongoCommondUtils mongoCommandUtils;
+    private readonly IChunksDAL chunksDAL;
 
-    public MetadataController(ILogger<MetadataController> logger, IMetadataDAL metadataDAL, IShardsDAL shardsDAL, IMemoryCache memoryCache, IMongoCommondUtils mongoCommandUtils)
+    public MetadataController(ILogger<MetadataController> logger, IMetadataDAL metadataDAL, IShardsDAL shardsDAL, IChunksDAL chunksDAL, IMemoryCache memoryCache, IMongoCommondUtils mongoCommandUtils)
     {
       this._logger = logger;
       this.metadataDAL = metadataDAL;
       this.memoryCache = memoryCache;
       this.shardsDAL = shardsDAL;
       this.mongoCommandUtils = mongoCommandUtils;
+      this.chunksDAL = chunksDAL;
     }
 
     /// <summary>
     /// Validates the mongodb connection string
     /// </summary>
     [HttpPost("validate")]
-    [ProducesResponseType(typeof(MongoConnecivityResponse), 200)]
-    public async Task<IActionResult> ValidateConnection([FromBody] MongoConnectionAttributes attributes)
+    [ProducesResponseType(typeof(MongoConnectivityResponse), 200)]
+    public async Task<IActionResult> ValidateConnection([FromBody] MongoConnectionRequestParams attributes)
     {
-      var response = new MongoConnecivityResponse();
+      var response = new MongoConnectivityResponse();
       BsonDefaults.GuidRepresentation = GuidRepresentation.Standard;
       var mongoClient = new MongoClient(attributes.ConnectionString);
       this.metadataDAL.Initialize(mongoClient);
@@ -76,6 +79,7 @@ namespace ShardsManager.API.Controllers
     /// </summary>
     /// <returns></returns>
     [HttpGet]
+    [ProducesResponseType(typeof(List<DbMetadata>), 200)]
     public async Task<IActionResult> GetMetadata()
     {
       var dbMetadatas = new List<DbMetadata>();
@@ -107,9 +111,16 @@ namespace ShardsManager.API.Controllers
     /// </summary>
     /// <returns></returns>
     [HttpGet("collectionStats/{database}/{collection}")]
+    [ProducesResponseType(typeof(CollectionStats), 200)]
     public async Task<IActionResult> GetCollectionStats(string database, string collection)
     {
       var stats = this.mongoCommandUtils.GetCollectionStats(database, collection);
+      var allChunks = await this.chunksDAL.GetAllChunks(database, collection, false);
+      foreach (var shardStats in stats.ShardStats)
+      {
+        var shardChunks = allChunks.Where(x => x.Shard.Contains(shardStats.ShardName));
+        shardStats.NoOfChunks = shardChunks.Count();
+      }
       return new OkObjectResult(stats);
     }
   }
