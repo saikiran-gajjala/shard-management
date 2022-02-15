@@ -96,7 +96,8 @@ $ri-wizard-nav-item-fg: $ri-neutral-700;
 $ri-wizard-nav-item-active: $ri-primary;
 $ri-wizard-nav-item-done: $ri-secondary;
 
-$ri-font-family: "Segoe UI", "Segoe Script", "Helvetica Neue", Helvetica, sans-serif;
+$ri-font-family: "Segoe UI", "Segoe Script", "Helvetica Neue", Helvetica,
+  sans-serif;
 $ri-font-size: 0.8rem;
 
 // Status
@@ -217,7 +218,8 @@ $buttonFocusBorderColor: $primaryDarkerColor;
 $buttonFocusOutline: 0 none;
 $buttonFocusOutlineOffset: 0px;
 $buttonFocusShadow: 0 0 0 0.2em lighten($primaryColor, 35%);
-$buttonTransition: background-color $transitionDuration, box-shadow $transitionDuration;
+$buttonTransition: background-color $transitionDuration,
+  box-shadow $transitionDuration;
 $raisedButtonShadow: 0 2px 3px 0 rgba(0, 0, 0, 0.15);
 $roundedButtonBorderRadius: 15px;
 
@@ -292,8 +294,8 @@ $checkboxFocusBgColor: $inputBgColor;
 $checkboxFocusTextColor: $primaryColor;
 $checkboxFocusBorderColor: $primaryColor;
 $checkboxFocusShadow: 0 0 0 0.2em lighten($primaryColor, 35%);
-$checkboxTransition: background-color $transitionDuration, border-color $transitionDuration,
-  box-shadow $transitionDuration;
+$checkboxTransition: background-color $transitionDuration,
+  border-color $transitionDuration, box-shadow $transitionDuration;
 
 //radiobutton
 $radiobuttonWidth: 16px;
@@ -311,8 +313,8 @@ $radiobuttonFocusBgColor: $inputBgColor;
 $radiobuttonFocusTextColor: $primaryColor;
 $radiobuttonFocusBorderColor: $primaryColor;
 $radiobuttonFocusShadow: 0 0 0 0.2em lighten($primaryColor, 35%);
-$radiobuttonTransition: background-color $transitionDuration, border-color $transitionDuration,
-  box-shadow $transitionDuration;
+$radiobuttonTransition: background-color $transitionDuration,
+  border-color $transitionDuration, box-shadow $transitionDuration;
 
 //togglebutton
 $toggleButtonBgColor: #dadada;
@@ -457,7 +459,8 @@ $scrollPanelTrackBorder: 0 none;
 $scrollPanelTrackBgColor: #f8f8f8;
 
 //card
-$cardShadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+$cardShadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14),
+  0 2px 1px -1px rgba(0, 0, 0, 0.12);
 
 //paginator
 $paginatorBgColor: $ri-neutral-800;

@@ -1,0 +1,134 @@
+<div class="shard-home">
+  <div class="page-header">
+    <div class="container-fluid align-items-center">
+      <div class="d-flex pb-2 justify-content-between">
+        <div class="float-right">
+          <h1 class="d-flex pl-3 pt-2 align-items-center shard-title">
+            <img class="icon" src="../../../../assets/file-storage.png" />
+            <span class="pl-1 title">Chunks</span>
+          </h1>
+        </div>
+      </div>
+    </div>
+  </div>
+  <header class="card-header page-subheader d-flex border-bottom align-items-center justify-content-between py-1 pr-1">
+    <div class="d-flex justify-content-start align-items-center" [style]="{ width: '50rem' }">
+      <div class="float-right d-flex justify-content-between">
+        <div class="search d-flex justify-content-between align-items-center">
+          <img class="icon" src="../../../../assets/database.png" />
+          <label class="shard-label ml-2 mt-2">Shard: {{ shardName }}</label>
+        </div>
+        <div class="search d-flex justify-content-between align-items-center ml-4">
+          <img class="icon" src="../../../../assets/database_1.png" />
+          <label class="shard-label ml-2 mt-2">Database: {{ database }}</label>
+        </div>
+        <div class="search d-flex justify-content-between align-items-center ml-4">
+          <img class="icon" src="../../../../assets/data-collection.png" />
+          <label class="shard-label ml-2 mt-2">Collection: {{ collection }}</label>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex justify-content-flex-end align-items-center">
+      <div class="mr-2 sort">
+        <!-- <label>Split Chunks: </label> -->
+        <!-- <div class="field-checkbox">
+          <p-checkbox
+            [(ngModel)]="chunkMetaDataState"
+            binary="true"
+            inputId="binary"
+            (ngModelChange)="fetchChunkMetadata()"
+          ></p-checkbox>
+          <label for="binary">Fetch Chunk Metadata</label>
+        </div> -->
+        <button pButton class="p-button-primary float-right" pTooltip="Move Chunks" label="Move Chunks" iconPos="right"
+          [disabled]="true" (click)="onMoveChunksClick()"></button>
+      </div>
+    </div>
+  </header>
+  <div class="page-content">
+    <div class="row table-metadata">
+      <div class="col">
+        <p-table [columns]="cols" [responsive]="true" *ngIf="chunksInfo" [value]="chunksInfo" [scrollable]="true"
+          [resizableColumns]="true" columnResizeMode="expand" scrollHeight="70vh"
+          styleClass="p-datatable-striped p-datatable-gridlines" (onFilter)="onFilter($event)">
+          <ng-template pTemplate="header" let-columns>
+            <tr>
+              <th class="check" rowspan="2">
+                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+              </th>
+              <th rowspan="2" class="alignment serialNo">#</th>
+              <th rowspan="2" class="alignment">Chunk Id</th>
+              <th [attr.colspan]="chunkRangeCount" class="alignment">
+                Min Key
+              </th>
+              <th [attr.colspan]="chunkRangeCount" class="alignment">
+                Max Key
+              </th>
+              <th rowspan="2" class="alignment">Chunk Size(MB)</th>
+              <th rowspan="2" class="alignment">Document Count</th>
+            </tr>
+            <tr>
+              <th *ngFor="let col of columns" class="alignment">
+                {{ col.header }}
+              </th>
+              <th *ngFor="let col of columns" class="alignment">
+                {{ col.header }}
+              </th>
+            </tr>
+
+            <!-- <tr>
+              <th style="width: 3rem">
+                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+              </th>
+              <th class="tableName">
+                <p-columnFilter type="text" field="tableInfo.name"></p-columnFilter>
+              </th>
+              <th class="rowsCount">
+                <p-columnFilter display="menu" matchMode="between" field="tableInfo.rowsCount"></p-columnFilter>
+              </th>
+              <th class="hotRelations">
+                <p-columnFilter display="menu" matchMode="between" field="tableInfo.hotRelationShip"></p-columnFilter>
+              </th>
+              <th class="indexes">
+                <p-columnFilter type="text" field="name"></p-columnFilter>
+              </th>
+              <th class="indexedColumns">
+                <p-columnFilter display="menu" matchMode="equals" field="columns"></p-columnFilter>
+              </th>
+            </tr> -->
+          </ng-template>
+          <ng-template pTemplate="body" let-entity let-ri="rowIndex" let-i="rowIndex">
+            <tr>
+              <td class="check">
+                <p-tableCheckbox [value]="selectedChunks"></p-tableCheckbox>
+              </td>
+              <td class="serialNo">
+                {{ i + 1 }}
+              </td>
+              <td colspan="1" [pTooltip]="entity.chunkId" class="alignment">
+                {{ entity.chunkId }}
+              </td>
+              <td class="alignment" *ngFor="let key of entity.minKeyChunkRange" [pTooltip]="key">
+                {{ key }}
+              </td>
+              <td class="alignment" *ngFor="let key of entity.maxKeyChunkRange" [pTooltip]="key">
+                {{ key }}
+              </td>
+              <td colspan="1" [pTooltip]="entity.chunkSize" class="alignment">
+                {{ entity.chunkSize }}
+              </td>
+              <td colspan="1" [pTooltip]="entity.noOfObjects" class="alignment">
+                {{ entity.noOfObjects }}
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="emptymessage" let-columns>
+            <tr>
+              <td [attr.colspan]="chunksInfo.length">No chunks found</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  </div>
+</div>

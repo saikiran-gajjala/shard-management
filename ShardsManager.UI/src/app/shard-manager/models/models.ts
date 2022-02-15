@@ -8,9 +8,9 @@ export * from './indexMetadata';
 export * from './indexField';
 export * from './chunk';
 export * from './indexInfo';
-export * from './shardMetadata';
-export * from './CollectionShardStatus';
+export * from './chunkFlatInfo';
+export * from './collectionShardStatus';
 export * from './shardKey';
 export * from './bsonType';
-export * from './mongoConnectionResponse'
-export * from './collectionStats'
+export * from './mongoConnectionResponse';
+export * from './collectionStats';

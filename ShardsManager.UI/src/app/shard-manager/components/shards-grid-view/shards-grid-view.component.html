@@ -1,6 +1,14 @@
 <div class="main">
   <div class="shards py-2 pb-4 pl-2">
-    <shard-card *ngFor="let shard of shards" [shard]="shard" [collectionStats]="collectionStats" class="shard">
+    <shard-card
+      *ngFor="let shard of shards"
+      [shard]="shard"
+      [collectionStats]="collectionStats"
+      [connectionId]="connectionId"
+      [database]="database"
+      [collection]="collection"
+      class="shard"
+    >
     </shard-card>
   </div>
 </div>

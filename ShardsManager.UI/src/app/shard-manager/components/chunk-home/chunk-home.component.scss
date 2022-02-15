@@ -17,12 +17,23 @@
       color: gray;
     }
   }
-
+  .card-header {
+    .search {
+      .icon {
+        width: 20px;
+        height: 20px;
+      }
+      .shard-label {
+        font-size: 1.2rem;
+        font-weight: 500;
+        color: gray;
+      }
+    }
+  }
   .page-content {
     min-height: 95%;
     height: 95%;
     aside {
-      background-color: rgba(0, 0, 0, 0.03);
       min-width: 20rem !important;
       width: 20rem;
       padding-left: 0.25rem;
@@ -31,6 +42,17 @@
       height: 100%;
       flex: 1;
       overflow: auto;
+    }
+    .table-metadata {
+      .check {
+        width: 3rem;
+      }
+      .alignment {
+        text-align: center;
+      }
+      .serialNo {
+        width: 3rem;
+      }
     }
   }
 }

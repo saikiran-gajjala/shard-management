@@ -8,9 +8,8 @@ describe('ShardCardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ShardCardComponent ]
-    })
-    .compileComponents();
+      declarations: [ShardCardComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

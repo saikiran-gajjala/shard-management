@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -27,6 +28,7 @@ namespace ShardsManager.API.Controllers
     /// </summary>
     /// <returns></returns>
     [HttpGet("{database}/{collection}")]
+    [ProducesResponseType(typeof(List<Chunk>), 200)]
     public async Task<IActionResult> GetChunks(string database, string collection, [FromQuery] bool fetchChunkMetadata = false)
     {
       var chunks = await this.chunksDAL.GetAllChunks(database, collection, fetchChunkMetadata);

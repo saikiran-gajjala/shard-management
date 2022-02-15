@@ -5,4 +5,6 @@ export interface Chunk {
   shard: string;
   min: Array<RangeOfKey>;
   max: Array<RangeOfKey>;
+  sizeInMB?: number;
+  noOfObjects?: number;
 }

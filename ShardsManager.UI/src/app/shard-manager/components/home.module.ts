@@ -29,6 +29,8 @@ import { ShardsComponent } from './shards/shards.component';
 import { ShardsGridViewComponent } from './shards-grid-view/shards-grid-view.component';
 import { ShardCardComponent } from './shard-card/shard-card.component';
 import { ShardMetadataComponent } from './shard-metadata/shard-metadata.component';
+import { ChunkHomeComponent } from './chunk-home/chunk-home.component';
+import { CheckboxModule } from 'primeng/checkbox';
 
 @NgModule({
   imports: [
@@ -55,9 +57,16 @@ import { ShardMetadataComponent } from './shard-metadata/shard-metadata.componen
     ConfirmDialogModule,
     MultiSelectModule,
     PaginatorModule,
-    ListboxModule,
+    CheckboxModule,
   ],
-  declarations: [HomeComponent, ShardsComponent, ShardsGridViewComponent, ShardCardComponent, ShardMetadataComponent],
+  declarations: [
+    HomeComponent,
+    ShardsComponent,
+    ShardsGridViewComponent,
+    ShardCardComponent,
+    ShardMetadataComponent,
+    ChunkHomeComponent,
+  ],
   exports: [
     FormsModule,
     ButtonModule,
@@ -77,6 +86,7 @@ import { ShardMetadataComponent } from './shard-metadata/shard-metadata.componen
     MultiSelectModule,
     PaginatorModule,
     ListboxModule,
+    CheckboxModule,
   ],
   providers: [MessageService, ShardManagerService, ConfirmationService],
 })

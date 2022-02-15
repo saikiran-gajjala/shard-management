@@ -8,9 +8,8 @@ describe('ShardMetadataComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ShardMetadataComponent ]
-    })
-    .compileComponents();
+      declarations: [ShardMetadataComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

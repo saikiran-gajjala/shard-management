@@ -5,13 +5,15 @@ import * as models from '../../models/models';
 @Component({
   selector: 'shards-grid-view',
   templateUrl: './shards-grid-view.component.html',
-  styleUrls: ['./shards-grid-view.component.scss']
+  styleUrls: ['./shards-grid-view.component.scss'],
 })
 export class ShardsGridViewComponent implements OnInit {
   @Input() shards: models.Shard[];
+  @Input() connectionId: string;
   @Input() collectionStats: models.CollectionStats;
-  constructor() { }
+  @Input() database: string;
+  @Input() collection: string;
+  constructor() {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 }

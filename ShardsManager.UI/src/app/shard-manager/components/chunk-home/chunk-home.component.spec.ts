@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ShardsComponent } from './shards.component';
+import { ChunkHomeComponent } from './chunk-home.component';
 
-describe('ShardsComponent', () => {
-  let component: ShardsComponent;
-  let fixture: ComponentFixture<ShardsComponent>;
+describe('ChunkHomeComponent', () => {
+  let component: ChunkHomeComponent;
+  let fixture: ComponentFixture<ChunkHomeComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ShardsComponent],
+      declarations: [ChunkHomeComponent],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ShardsComponent);
+    fixture = TestBed.createComponent(ChunkHomeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

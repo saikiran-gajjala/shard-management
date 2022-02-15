@@ -12,15 +12,20 @@ import { Router } from '@angular/router';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
-  connectionString: string = 'mongodb://localhost:26000/config?retryWrites=true&w=majority';
+  connectionString: string =
+    'mongodb://localhost:26000/config?retryWrites=true&w=majority';
+  cloudAnimateDelay = false;
   constructor(
     private shardManagerService: ShardManagerService,
     private messageService: MessageService,
     private spinner: NgxSpinnerService,
     private router: Router
-  ) { }
+  ) {}
 
   ngOnInit() {
+    setTimeout(() => {
+      this.cloudAnimateDelay = true;
+    }, 0);
   }
 
   onValidate() {
@@ -30,21 +35,30 @@ export class HomeComponent implements OnInit {
       .subscribe(
         (response: models.MongoConnectionResponse) => {
           this.spinner.hide();
-          if (response.isConnectionSuccess && response.isShardedCluster && response.connectionId !== '') {
+          if (
+            response.isConnectionSuccess &&
+            response.isShardedCluster &&
+            response.connectionId !== ''
+          ) {
             this.messageService.add({
               severity: 'success',
-              detail: 'Connection Successful'
+              detail: 'Connection Successful',
             });
             this.router.navigate([`shards/${response.connectionId}`]);
           } else if (!response.isConnectionSuccess) {
             this.messageService.add({
               severity: 'error',
-              detail: 'Failed to connect to the mongodb. Please check the connection string or whitelist the IP Address',
+              detail:
+                'Failed to connect to the mongodb. Please check the connection string or whitelist the IP Address',
             });
-          } else if (response.isConnectionSuccess && !response.isShardedCluster) {
+          } else if (
+            response.isConnectionSuccess &&
+            !response.isShardedCluster
+          ) {
             this.messageService.add({
               severity: 'error',
-              detail: 'The Connected mongodb instance is not a sharded cluster!',
+              detail:
+                'The Connected mongodb instance is not a sharded cluster!',
             });
           }
         },

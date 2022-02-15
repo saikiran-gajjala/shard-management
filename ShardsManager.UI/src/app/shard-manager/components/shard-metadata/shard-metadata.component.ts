@@ -8,7 +8,7 @@ import * as models from '../../models/models';
 @Component({
   selector: 'shard-metadata',
   templateUrl: './shard-metadata.component.html',
-  styleUrls: ['./shard-metadata.component.scss']
+  styleUrls: ['./shard-metadata.component.scss'],
 })
 export class ShardMetadataComponent implements OnInit {
   @Input() connectionId: string;
@@ -26,9 +26,6 @@ export class ShardMetadataComponent implements OnInit {
   selectedCollectionShardState: string = 'Non-Sharded';
   indexes: models.IndexInfo[] = [];
   selectedIndex: models.IndexInfo;
-  shardsMetadata: models.ShardMetadata[] = [];
-  chunks: models.Chunk[] = [];
-  displayChunks = false;
   selectedCollectionShardKey: string;
   shardKey: models.ShardKey[] = [];
 
@@ -36,8 +33,8 @@ export class ShardMetadataComponent implements OnInit {
     private shardManagerService: ShardManagerService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
-    private spinner: NgxSpinnerService,
-  ) { }
+    private spinner: NgxSpinnerService
+  ) {}
 
   ngOnInit(): void {
     this.getMetadata();
@@ -137,6 +134,7 @@ export class ShardMetadataComponent implements OnInit {
             (result: boolean) => {
               this.spinner.hide();
               this.fetchCollectionShardStatus();
+              this.fetchCollectionStats();
               if (result) {
                 this.messageService.add({
                   severity: 'success',
@@ -166,7 +164,8 @@ export class ShardMetadataComponent implements OnInit {
       .fetchCollectionStats(
         this.selectedDatabase.database,
         this.selectedCollection.collectionName,
-        this.connectionId)
+        this.connectionId
+      )
       .subscribe(
         (collectionStats: models.CollectionStats) => {
           this.collectionStatsChange.emit(collectionStats);
@@ -175,85 +174,12 @@ export class ShardMetadataComponent implements OnInit {
           this.spinner.hide();
           this.messageService.add({
             severity: 'error',
-            detail: 'Failed to fetch the Shard Stats for the selected database and collection!',
+            detail:
+              'Failed to fetch the Shard Stats for the selected database and collection!',
           });
         }
       );
   }
-  viewChunks() {
-    this.spinner.show();
-    this.shardsMetadata = [];
-    this.shardManagerService
-      .fetchChunks(
-        this.selectedDatabase.database,
-        this.selectedCollection.collectionName,
-        this.connectionId
-      )
-      .subscribe(
-        (chunks: models.Chunk[]) => {
-          this.spinner.hide();
-          this.chunks = chunks;
-          this.displayChunks = true;
-          this.chunks.forEach((chunk) => {
-            chunk.shard = chunk.shard.replace('shard=', '');
-            const existingShard = this.shardsMetadata.filter(
-              (x) => x.shardName === chunk.shard
-            );
-            if (existingShard && existingShard.length > 0) {
-              let { minKey, maxKey } = this.fetchChunkKeys(chunk);
-              if (!existingShard[0].chunkRange) {
-                existingShard[0].chunkRange = [];
-              }
-              existingShard[0].chunkRange.push(
-                `{min : ${minKey} , max : ${maxKey}}`
-              );
-            } else {
-              let { minKey, maxKey } = this.fetchChunkKeys(chunk);
-              const shardMetadata: models.ShardMetadata = {
-                shardName: chunk.shard,
-              };
-              if (!shardMetadata.chunkRange) {
-                shardMetadata.chunkRange = [];
-              }
-              shardMetadata.chunkRange.push(
-                `{min : ${minKey} , max : ${maxKey}}`
-              );
-              this.shardsMetadata.push(shardMetadata);
-            }
-          });
-        },
-        (error: HttpErrorResponse) => {
-          this.spinner.hide();
-          this.messageService.add({
-            severity: 'error',
-            detail: 'Failed to fetch the chunks for the collection!',
-          });
-        }
-      );
-  }
-
-  private fetchChunkKeys(chunk: models.Chunk) {
-    let minKey = '{';
-    for (let j = 0; j < chunk.min.length; j++) {
-      minKey = minKey + `${chunk.min[j].name} : ${chunk.min[j].value}`;
-      if (j + 1 !== chunk.min.length) {
-        minKey = minKey + ' , ';
-      }
-    }
-    minKey = minKey + '}';
-
-    let maxKey = '{';
-    for (let j = 0; j < chunk.max.length; j++) {
-      maxKey = maxKey + `${chunk.max[j].name} : ${chunk.max[j].value}`;
-      if (j + 1 !== chunk.min.length) {
-        maxKey = maxKey + ' , ';
-      }
-    }
-    maxKey = maxKey + '}';
-    return { minKey, maxKey };
-  }
-
-
 
   private getMetadata() {
     this.shardManagerService.fetchMetadata(this.connectionId).subscribe(
@@ -296,12 +222,16 @@ export class ShardMetadataComponent implements OnInit {
               shardKey +
               `${state.shardKeys[j].name}:${state.shardKeys[j].indexType}`;
             if (j + 1 !== state.shardKeys.length) {
-              shardKey = shardKey + ', ';
+              shardKey = shardKey + ',';
             }
           }
           shardKey = shardKey + '}';
           if (state.shardKeys.length > 0) {
             this.selectedCollectionShardKey = shardKey;
+          }
+
+          if (this.selectedCollectionShardState === 'Sharded') {
+            this.fetchCollectionStats();
           }
         },
         (error: HttpErrorResponse) => {
@@ -325,8 +255,6 @@ export class ShardMetadataComponent implements OnInit {
 
   private clearFields() {
     this.indexes = [];
-    this.chunks = [];
-    this.displayChunks = false;
     this.shardKey = [];
     this.selectedCollectionShardKey = '';
   }

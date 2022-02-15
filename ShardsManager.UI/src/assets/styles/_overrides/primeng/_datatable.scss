@@ -1,13 +1,17 @@
+.p-datatable .p-datatable-thead > tr {
+  line-height: 0.2;
+  padding: 0.1rem 0.1rem;
+  font-size: medium;
+}
+
 .p-datatable .p-datatable-thead > tr > th {
-  line-height: 1;
-  padding: 0.5rem 0.5rem;
-  // font-weight: 450;
-  font-size: 14px;
+  line-height: 0.2;
+  padding: 0.1rem 0.1rem;
+  font-size: medium;
 }
 
 .p-datatable .p-datatable-tbody > tr > td {
-  line-height: 1.5;
-  padding: 0.5rem 0.5rem;
-  // font-weight: 300;
-  font-size: 12px;
+  line-height: 0.2;
+  padding: 0.1rem 0.1rem;
+  font-size: small;
 }

@@ -52,9 +52,9 @@ namespace ShardsManager.API.Middleware
 
         var cacheExpiryOptions = new MemoryCacheEntryOptions
         {
-          AbsoluteExpiration = DateTime.Now.AddMinutes(30),
+          AbsoluteExpiration = DateTime.Now.AddHours(5),
           Priority = CacheItemPriority.High,
-          SlidingExpiration = TimeSpan.FromHours(1)
+          SlidingExpiration = TimeSpan.FromHours(5)
         };
         var metadata = context.RequestServices.GetService<IMetadataDAL>();
         metadata.Initialize(mongoClient);

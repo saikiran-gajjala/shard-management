@@ -21,10 +21,10 @@ namespace ShardsManager.API.Models
     public List<Range> Max { get; set; } = new List<Range>();
 
     [BsonElement(ChunkConstants.Shard)]
-    public double SizeInMB { get; set; }
+    public double? SizeInMB { get; set; }
 
     [BsonElement(ChunkConstants.Shard)]
-    public long NoOfObjects { get; set; }
+    public long? NoOfObjects { get; set; }
   }
 
   public class Range

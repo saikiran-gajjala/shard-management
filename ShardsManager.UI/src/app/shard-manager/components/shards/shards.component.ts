@@ -10,7 +10,7 @@ import { CollectionStats } from '../../models/collectionStats';
 @Component({
   selector: 'shards',
   templateUrl: './shards.component.html',
-  styleUrls: ['./shards.component.scss']
+  styleUrls: ['./shards.component.scss'],
 })
 export class ShardsComponent implements OnInit {
   visibleSidebar: boolean = true;
@@ -38,7 +38,7 @@ export class ShardsComponent implements OnInit {
     private confirmationService: ConfirmationService,
     private spinner: NgxSpinnerService,
     private activatedRoute: ActivatedRoute
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.spinner.show();
@@ -214,4 +214,3 @@ export class ShardsComponent implements OnInit {
     });
   }
 }
-

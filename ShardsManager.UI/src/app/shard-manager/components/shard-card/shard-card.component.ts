@@ -2,15 +2,19 @@ import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import * as models from '../../models/models';
 import { filter } from 'rxjs/operators';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'shard-card',
   templateUrl: './shard-card.component.html',
-  styleUrls: ['./shard-card.component.scss']
+  styleUrls: ['./shard-card.component.scss'],
 })
 export class ShardCardComponent implements OnInit, OnChanges {
   @Input() shard: models.Shard;
+  @Input() connectionId: string;
   @Input() collectionStats: models.CollectionStats;
+  @Input() database: string;
+  @Input() collection: string;
   shardStats: models.ShardStats;
   datasources: Array<any> = [
     { name: 'MySQL', value: 'mysql' },
@@ -18,19 +22,28 @@ export class ShardCardComponent implements OnInit, OnChanges {
     { name: 'Postgre SQL', value: 'postgresql' },
     { name: 'Oracle SQL', value: 'oracle' },
   ];
-  constructor(private router: Router,) { }
+  constructor(private router: Router, private messageService: MessageService) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   ngOnChanges(): void {
     if (this.collectionStats) {
-      this.shardStats = this.collectionStats.shardStats.filter(x => x.shardName === this.shard.id)[0];
+      this.shardStats = this.collectionStats.shardStats.filter(
+        (x) => x.shardName === this.shard.id
+      )[0];
     }
   }
 
   open(id: string) {
-    this.router.navigate([`steps/${id}/metadata`]);
+    if (!this.shard || !this.database || !this.collection) {
+      this.messageService.add({
+        severity: 'error',
+        detail: 'Please choose valid database and collection!!',
+      });
+    }
+    this.router.navigate([
+      `chunks/${this.connectionId}/${id}/${this.database}/${this.collection}`,
+    ]);
   }
 
   fetchDataSourceKey(value: string) {

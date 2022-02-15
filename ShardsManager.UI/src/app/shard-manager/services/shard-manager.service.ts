@@ -13,40 +13,55 @@ export class ShardManagerService {
     this.baserUrl = environment.apiUrl;
   }
 
-  validateConnectionString(connectionString: string): Observable<models.MongoConnectionResponse> {
+  validateConnectionString(
+    connectionString: string
+  ): Observable<models.MongoConnectionResponse> {
     const headers = new HttpHeaders({ connectionString: connectionString });
     return this.http.post<models.MongoConnectionResponse>(
       `${this.baserUrl}/metadata/validate`,
       {
-        connectionString: connectionString
+        connectionString: connectionString,
       },
-      { headers });
+      { headers }
+    );
   }
 
   fetchMetadata(connectionId: string): Observable<Array<models.DbMetadata>> {
     const headers = new HttpHeaders({ connectionId: connectionId });
-    return this.http.get<Array<models.DbMetadata>>(`${this.baserUrl}/metadata`, { headers });
+    return this.http.get<Array<models.DbMetadata>>(
+      `${this.baserUrl}/metadata`,
+      { headers }
+    );
   }
 
   fetchShards(connectionId: string): Observable<Array<models.Shard>> {
     const headers = new HttpHeaders({ connectionId: connectionId });
-    return this.http.get<Array<models.Shard>>(`${this.baserUrl}/shards`, { headers });
+    return this.http.get<Array<models.Shard>>(`${this.baserUrl}/shards`, {
+      headers,
+    });
   }
 
-  fetchDbShardStatus(database: string, connectionId: string): Observable<boolean> {
+  fetchDbShardStatus(
+    database: string,
+    connectionId: string
+  ): Observable<boolean> {
     const headers = new HttpHeaders({ connectionId: connectionId });
     return this.http.get<boolean>(
-      `${this.baserUrl}/shards/dbShardStatus/${database}`
-      ,
-      { headers });
+      `${this.baserUrl}/shards/dbShardStatus/${database}`,
+      { headers }
+    );
   }
 
-  fetchCollectionStats(database: string, collection: string, connectionId: string): Observable<models.CollectionStats> {
+  fetchCollectionStats(
+    database: string,
+    collection: string,
+    connectionId: string
+  ): Observable<models.CollectionStats> {
     const headers = new HttpHeaders({ connectionId: connectionId });
     return this.http.get<models.CollectionStats>(
-      `${this.baserUrl}/metadata/collectionStats/${database}/${collection}`
-      ,
-      { headers });
+      `${this.baserUrl}/metadata/collectionStats/${database}/${collection}`,
+      { headers }
+    );
   }
 
   fetchCollectionShardStatus(
@@ -56,9 +71,9 @@ export class ShardManagerService {
   ): Observable<models.CollectionShardStatus> {
     const headers = new HttpHeaders({ connectionId: connectionId });
     return this.http.get<models.CollectionShardStatus>(
-      `${this.baserUrl}/shards/collShardStatus/${database}/${collection}`
-      ,
-      { headers });
+      `${this.baserUrl}/shards/collShardStatus/${database}/${collection}`,
+      { headers }
+    );
   }
 
   shardDatabase(database: string, connectionId: string): Observable<boolean> {
@@ -66,7 +81,8 @@ export class ShardManagerService {
     return this.http.post<boolean>(
       `${this.baserUrl}/shards/shardDB/${database}`,
       {},
-      { headers });
+      { headers }
+    );
   }
 
   shardCollection(
@@ -79,7 +95,8 @@ export class ShardManagerService {
     return this.http.post<boolean>(
       `${this.baserUrl}/shards/shardCollection/${database}/${collection}`,
       indexFields,
-      { headers });
+      { headers }
+    );
   }
 
   startStopBalancer(start: boolean, connectionId: string): Observable<boolean> {
@@ -87,24 +104,28 @@ export class ShardManagerService {
     return this.http.post<boolean>(
       `${this.baserUrl}/shards/balancerState/${start}`,
       {},
-      { headers });
+      { headers }
+    );
   }
 
   fetchBalancerState(connectionId: string): Observable<boolean> {
     const headers = new HttpHeaders({ connectionId: connectionId });
-    return this.http.get<boolean>(`${this.baserUrl}/shards/balancerState`,
-      { headers });
+    return this.http.get<boolean>(`${this.baserUrl}/shards/balancerState`, {
+      headers,
+    });
   }
 
   fetchChunks(
     database: string,
     collection: string,
-    connectionId: string
+    connectionId: string,
+    fetchChunkMetadata: boolean
   ): Observable<models.Chunk[]> {
     const headers = new HttpHeaders({ connectionId: connectionId });
     return this.http.get<models.Chunk[]>(
-      `${this.baserUrl}/chunks/${database}/${collection}?fetchChunkMetadata=false`,
-      { headers });
+      `${this.baserUrl}/chunks/${database}/${collection}?fetchChunkMetadata=${fetchChunkMetadata}`,
+      { headers }
+    );
   }
 
   preSplitChunks(
@@ -117,7 +138,8 @@ export class ShardManagerService {
     return this.http.post<boolean>(
       `${this.baserUrl}/chunks/presplit/${database}/${collection}`,
       chunkMetadata,
-      { headers });
+      { headers }
+    );
   }
 
   moveChunk(
@@ -130,6 +152,7 @@ export class ShardManagerService {
     return this.http.post<boolean>(
       `${this.baserUrl}/chunks/moveChunk/${database}/${collection}`,
       chunkMetadata,
-      { headers });
+      { headers }
+    );
   }
 }

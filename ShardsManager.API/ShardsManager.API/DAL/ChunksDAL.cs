@@ -77,8 +77,8 @@ namespace ShardsManager.API.DAL
         Parallel.ForEach(chunkDtos, chunkDto =>
         {
           var chunk = new Chunk();
-          chunk.Id = chunkDto.GetElement(CommonConstants.UnderScoreId).ToString();
-          chunk.Shard = chunkDto.GetElement(ChunkConstants.Shard).ToString();
+          chunk.Id = chunkDto.GetElement(CommonConstants.UnderScoreId).Value.ToString();
+          chunk.Shard = chunkDto.GetElement(ChunkConstants.Shard).Value.ToString();
           var minKeyElements = chunkDto.GetElement(ChunkConstants.Min).Value.ToBsonDocument().Elements.ToList();
           var maxKeyElements = chunkDto.GetElement(ChunkConstants.Max).Value.ToBsonDocument().Elements.ToList();
           chunk.Min = this.FetchChunkRanges(minKeyElements);

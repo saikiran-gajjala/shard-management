@@ -8,9 +8,8 @@ describe('ShardsGridViewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ShardsGridViewComponent ]
-    })
-    .compileComponents();
+      declarations: [ShardsGridViewComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

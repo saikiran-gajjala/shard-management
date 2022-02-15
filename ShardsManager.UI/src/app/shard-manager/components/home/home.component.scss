@@ -8,21 +8,82 @@ q {
   quotes: "« " " »";
 }
 
-.metadata-container {
+svg#clouds {
+  position: fixed;
+  bottom: -320px;
+  left: -400px;
+  z-index: -10;
+  width: 1920px;
+  transition: 1000ms ease;
+}
+
+svg.clouds {
+  left: -230px !important;
+  bottom: -160px !important;
+}
+
+.homeBody {
   position: absolute;
-    top: 35%;
-    left: 30%;
-    margin-top: -50px;
-    margin-left: -50px;
-    width: 600px;
-    height: 400px;
-  .mongo-connection {
-    .title{
-      font-size: x-large;
-      font-weight: bolder;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background-image: url("./../../../../assets/mongodb_live_login_desktop.png");
+  background-size: cover;
+  background-position: center center;
+  z-index: -1;
+  opacity: 0.9;
+  .content {
+    margin-top: 150px;
+    text-align: center;
+    .main-title {
+      .icon {
+        font-size: 40px;
+      }
+      color: #eee;
+      font-size: 40px;
     }
-    .connectionInput {
-      width: 900px;
+    p.main-description {
+      max-width: 800px;
+      margin: auto;
+      color: #fff;
+      margin-top: 30px;
+    }
+
+    .metadata-container {
+      margin-top: 80px;
+      margin-left: 100px;
+      text-align: center;
+      max-width: 991px;
+      .mongo-connection {
+        .title {
+          font-size: larger;
+          font-weight: bolder;
+          color: #fff;
+        }
+        .connectionInput {
+          width: 900px;
+        }
+      }
     }
   }
 }
+
+// .metadata-container {
+//   position: absolute;
+//     top: 35%;
+//     left: 30%;
+//     margin-top: -50px;
+//     margin-left: -50px;
+//     width: 600px;
+//     height: 400px;
+//   .mongo-connection {
+//     .title{
+//       font-size: x-large;
+//       font-weight: bolder;
+//     }
+//     .connectionInput {
+//       width: 900px;
+//     }
+//   }
+// }

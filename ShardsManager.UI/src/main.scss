@@ -12,7 +12,11 @@
 @import "~@fortawesome/fontawesome-free/scss/brands.scss";
 @import "~@fortawesome/fontawesome-free/scss/regular.scss";
 @import "~@fortawesome/fontawesome-free/scss/solid.scss";
-
+@import "assets/styles/primeng.scss";
+@import "~primeng/resources/primeng.min.css";
+@import "~font-awesome/css/font-awesome.css";
+@import "assets/styles/bootstrap.scss";
+@import "~primeicons/primeicons.css";
 // Theme customization
 @import "theme/theme";
 
@@ -25,7 +29,7 @@
 }
 
 body {
-  background-color: #f9f9f9;
+  // background-color: #f9f9f9;
   font-family: "Segoe UI", "Segoe Script", "Helvetica Neue", Helvetica,
     sans-serif;
   //font-weight: 300;
