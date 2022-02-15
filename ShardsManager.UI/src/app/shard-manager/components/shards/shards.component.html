@@ -3,7 +3,7 @@
     <div class="container-fluid align-items-center">
       <div class="d-flex pb-2 justify-content-between">
         <div class="float-right">
-          <h1 class="d-flex pl-3 pt-2 align-items-center shard-title">
+          <h1 class="d-flex pl-3 align-items-center shard-title">
             <img class="icon" src="../../../../assets/database.png" />
             <span class="pl-1 title">Shards</span>
           </h1>
@@ -32,17 +32,25 @@
       </div> -->
     </div>
     <div class="d-flex justify-content-flex-end align-items-center">
-      <div class="mr-2 sort">
-        <!-- <label>Split Chunks: </label> -->
-        <button
-          pButton
-          class="p-button-primary float-right"
-          pTooltip="Split Chunks"
-          label="Split Chunks"
-          iconPos="right"
-          (click)="onSplitChunksClick()"
-        ></button>
+      <div class="mr-2 d-flex justify-content-between align-items-center">
+        <label class="chunk-metadata-label mr-2 mt-2">Auto Refresh:</label>
+        <p-selectButton
+          [options]="autoRefreshOptions"
+          [(ngModel)]="autoRefreshOptionSelected"
+          optionLabel="label"
+          optionValue="value"
+          (onChange)="autoRefresh()"
+        >
+        </p-selectButton>
       </div>
+      <button
+        pButton
+        class="p-button-primary float-right"
+        pTooltip="Split Chunks"
+        label="Split Chunks"
+        iconPos="right"
+        (click)="onSplitChunksClick()"
+      ></button>
     </div>
   </header>
   <div class="page-content">

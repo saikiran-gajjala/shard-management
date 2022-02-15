@@ -3,7 +3,7 @@
     <div class="container-fluid align-items-center">
       <div class="d-flex pb-2 justify-content-between">
         <div class="float-right">
-          <h1 class="d-flex pl-3 pt-2 align-items-center shard-title">
+          <h1 class="d-flex pl-3 align-items-center shard-title">
             <img class="icon" src="../../../../assets/file-storage.png" />
             <span class="pl-1 title">Chunks</span>
           </h1>
@@ -11,46 +11,72 @@
       </div>
     </div>
   </div>
-  <header class="card-header page-subheader d-flex border-bottom align-items-center justify-content-between py-1 pr-1">
-    <div class="d-flex justify-content-start align-items-center" [style]="{ width: '50rem' }">
+  <header
+    class="card-header page-subheader d-flex border-bottom align-items-center justify-content-between py-1 pr-1"
+  >
+    <div
+      class="d-flex justify-content-start align-items-center"
+      [style]="{ width: '50rem' }"
+    >
       <div class="float-right d-flex justify-content-between">
         <div class="search d-flex justify-content-between align-items-center">
           <img class="icon" src="../../../../assets/database.png" />
           <label class="shard-label ml-2 mt-2">Shard: {{ shardName }}</label>
         </div>
-        <div class="search d-flex justify-content-between align-items-center ml-4">
+        <div
+          class="search d-flex justify-content-between align-items-center ml-4"
+        >
           <img class="icon" src="../../../../assets/database_1.png" />
           <label class="shard-label ml-2 mt-2">Database: {{ database }}</label>
         </div>
-        <div class="search d-flex justify-content-between align-items-center ml-4">
+        <div
+          class="search d-flex justify-content-between align-items-center ml-4"
+        >
           <img class="icon" src="../../../../assets/data-collection.png" />
-          <label class="shard-label ml-2 mt-2">Collection: {{ collection }}</label>
+          <label class="shard-label ml-2 mt-2"
+            >Collection: {{ collection }}</label
+          >
         </div>
       </div>
     </div>
     <div class="d-flex justify-content-flex-end align-items-center">
-      <div class="mr-2 sort">
-        <!-- <label>Split Chunks: </label> -->
-        <!-- <div class="field-checkbox">
-          <p-checkbox
-            [(ngModel)]="chunkMetaDataState"
-            binary="true"
-            inputId="binary"
-            (ngModelChange)="fetchChunkMetadata()"
-          ></p-checkbox>
-          <label for="binary">Fetch Chunk Metadata</label>
-        </div> -->
-        <button pButton class="p-button-primary float-right" pTooltip="Move Chunks" label="Move Chunks" iconPos="right"
-          [disabled]="true" (click)="onMoveChunksClick()"></button>
+      <div class="mr-2 d-flex justify-content-between align-items-center">
+        <label class="chunk-metadata-label mr-2 mt-2">Chunk Metadata:</label>
+        <p-selectButton
+          [options]="chunkMetadatOptions"
+          [(ngModel)]="chunkMetadataOptionSelected"
+          optionLabel="label"
+          optionValue="value"
+          (onChange)="fetchChunkMetadata()"
+        >
+        </p-selectButton>
       </div>
+      <button
+        pButton
+        class="p-button-primary float-right ml-3"
+        pTooltip="Move Chunks"
+        label="Move Chunks"
+        iconPos="right"
+        [disabled]="true"
+        (click)="onMoveChunksClick()"
+      ></button>
     </div>
   </header>
   <div class="page-content">
     <div class="row table-metadata">
       <div class="col">
-        <p-table [columns]="cols" [responsive]="true" *ngIf="chunksInfo" [value]="chunksInfo" [scrollable]="true"
-          [resizableColumns]="true" columnResizeMode="expand" scrollHeight="70vh"
-          styleClass="p-datatable-striped p-datatable-gridlines" (onFilter)="onFilter($event)">
+        <p-table
+          [columns]="cols"
+          [responsive]="true"
+          *ngIf="chunksInfo"
+          [value]="chunksInfo"
+          [scrollable]="true"
+          [resizableColumns]="true"
+          columnResizeMode="expand"
+          scrollHeight="70vh"
+          styleClass="p-datatable-striped p-datatable-gridlines"
+          (onFilter)="onFilter($event)"
+        >
           <ng-template pTemplate="header" let-columns>
             <tr>
               <th class="check" rowspan="2">
@@ -97,7 +123,12 @@
               </th>
             </tr> -->
           </ng-template>
-          <ng-template pTemplate="body" let-entity let-ri="rowIndex" let-i="rowIndex">
+          <ng-template
+            pTemplate="body"
+            let-entity
+            let-ri="rowIndex"
+            let-i="rowIndex"
+          >
             <tr>
               <td class="check">
                 <p-tableCheckbox [value]="selectedChunks"></p-tableCheckbox>
@@ -108,10 +139,18 @@
               <td colspan="1" [pTooltip]="entity.chunkId" class="alignment">
                 {{ entity.chunkId }}
               </td>
-              <td class="alignment" *ngFor="let key of entity.minKeyChunkRange" [pTooltip]="key">
+              <td
+                class="alignment"
+                *ngFor="let key of entity.minKeyChunkRange"
+                [pTooltip]="key"
+              >
                 {{ key }}
               </td>
-              <td class="alignment" *ngFor="let key of entity.maxKeyChunkRange" [pTooltip]="key">
+              <td
+                class="alignment"
+                *ngFor="let key of entity.maxKeyChunkRange"
+                [pTooltip]="key"
+              >
                 {{ key }}
               </td>
               <td colspan="1" [pTooltip]="entity.chunkSize" class="alignment">

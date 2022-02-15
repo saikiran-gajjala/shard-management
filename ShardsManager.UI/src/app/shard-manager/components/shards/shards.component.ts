@@ -32,13 +32,21 @@ export class ShardsComponent implements OnInit {
     { name: 'MaxKey', value: 'MaxKey' },
     { name: 'MinKey', value: 'MaxKey' },
   ];
+  autoRefreshOptions: any[];
+  autoRefreshOptionSelected: string = 'off';
+  autoRefreshHandler: any;
   constructor(
     private shardManagerService: ShardManagerService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private spinner: NgxSpinnerService,
     private activatedRoute: ActivatedRoute
-  ) {}
+  ) {
+    this.autoRefreshOptions = [
+      { label: 'Off', value: 'off' },
+      { label: 'On', value: 'on' },
+    ];
+  }
 
   ngOnInit() {
     this.spinner.show();
@@ -72,6 +80,14 @@ export class ShardsComponent implements OnInit {
 
   onCollectionStatChange(collectionStats: models.CollectionStats) {
     this.collectionStats = collectionStats;
+  }
+
+  autoRefresh() {
+    if (this.autoRefreshOptionSelected === 'on') {
+      this.autoRefreshHandler = setInterval(() => this.getAllShards(), 2000);
+    } else {
+      clearInterval(this.autoRefreshHandler);
+    }
   }
 
   private getAllShards() {
