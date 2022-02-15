@@ -24,13 +24,20 @@ export class ChunkHomeComponent implements OnInit {
   cols: any[] = [];
   // optionalColumns: any[] = [];
   chunkMetaDataState: false;
+  chunkMetadatOptions: any[];
+  chunkMetadataOptionSelected: string = 'off';
   constructor(
     private shardManagerService: ShardManagerService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private spinner: NgxSpinnerService,
     private activatedRoute: ActivatedRoute
-  ) {}
+  ) {
+    this.chunkMetadatOptions = [
+      { label: 'Off', value: 'off' },
+      { label: 'On', value: 'on' },
+    ];
+  }
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe((res) => {
@@ -45,13 +52,28 @@ export class ChunkHomeComponent implements OnInit {
   onMoveChunksClick() {}
 
   fetchChunkMetadata() {
-    if (this.chunkMetaDataState) {
-      this.getChunks(true);
-    }
+    this.confirmationService.confirm({
+      message: `The process will take time to fetch the chunk size based on the no of documents. Do you want to proceed?`,
+      header: 'Fetch Chunk Metadata',
+      accept: () => {
+        if (this.chunkMetadataOptionSelected === 'on') {
+          this.getChunks(true);
+        } else {
+          this.getChunks(false);
+        }
+      },
+      reject: () => {
+        this.chunkMetadataOptionSelected = 'off';
+      },
+    });
   }
+
   getChunks(fetchChunkMetadata: boolean) {
     this.spinner.show();
+    this.chunks = [];
     this.chunksInfo = [];
+    this.selectedChunks = [];
+    this.cols = [];
     this.shardManagerService
       .fetchChunks(
         this.database,
