@@ -1,0 +1,13 @@
+runtime: custom
+env: flex
+service: shard-management-api
+
+manual_scaling:
+  instances: 1
+resources:
+  cpu: 2
+  memory_gb: 1.6
+  disk_size_gb: 10
+
+env_variables:
+  # My__Greeting: Hello AppEngine!

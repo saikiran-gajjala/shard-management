@@ -15,6 +15,8 @@ export class ShardCardComponent implements OnInit, OnChanges {
   @Input() collectionStats: models.CollectionStats;
   @Input() database: string;
   @Input() collection: string;
+  @Input() databaseShardState: boolean = false;
+  @Input() collectionShardState: boolean = false;
   shardStats: models.ShardStats;
   datasources: Array<any> = [
     { name: 'MySQL', value: 'mysql' },
@@ -27,19 +29,32 @@ export class ShardCardComponent implements OnInit, OnChanges {
   ngOnInit(): void {}
 
   ngOnChanges(): void {
-    if (this.collectionStats) {
+    if (
+      this.collectionStats &&
+      this.databaseShardState &&
+      this.collectionShardState
+    ) {
       this.shardStats = this.collectionStats.shardStats.filter(
         (x) => x.shardName === this.shard.id
       )[0];
+    } else {
+      this.shardStats = null;
     }
   }
 
   open(id: string) {
-    if (!this.shard || !this.database || !this.collection) {
+    if (
+      !this.shard ||
+      !this.database ||
+      !this.collection ||
+      !this.databaseShardState ||
+      !this.collectionShardState
+    ) {
       this.messageService.add({
         severity: 'error',
-        detail: 'Please choose valid database and collection!!',
+        detail: 'Please choose valid sharded database and collection!',
       });
+      return;
     }
     this.router.navigate([
       `chunks/${this.connectionId}/${id}/${this.database}/${this.collection}`,

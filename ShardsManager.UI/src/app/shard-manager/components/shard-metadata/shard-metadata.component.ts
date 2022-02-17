@@ -15,6 +15,9 @@ export class ShardMetadataComponent implements OnInit {
   @Output() databaseChange = new EventEmitter<models.DbMetadata>();
   @Output() collectionChange = new EventEmitter<models.CollectionMetadata>();
   @Output() collectionStatsChange = new EventEmitter<models.CollectionStats>();
+  @Output() shardKeyChange = new EventEmitter<models.ShardKey[]>();
+  @Output() dbShardStatusChange = new EventEmitter<boolean>();
+  @Output() collectionshardStatusChange = new EventEmitter<boolean>();
   visibleSidebar: boolean = true;
   dbMetadata: models.DbMetadata[] = [];
   clusterType: string;
@@ -216,6 +219,8 @@ export class ShardMetadataComponent implements OnInit {
             ? 'Sharded'
             : 'Non-Sharded';
           this.shardKey = state.shardKeys;
+          this.collectionshardStatusChange.emit(state.shardStatus);
+          this.shardKeyChange.emit(this.shardKey);
           let shardKey = '{';
           for (let j = 0; j < state.shardKeys.length; j++) {
             shardKey =
@@ -249,13 +254,13 @@ export class ShardMetadataComponent implements OnInit {
       .fetchDbShardStatus(this.selectedDatabase.database, this.connectionId)
       .subscribe((state: boolean) => {
         this.selectedDatabaseShardState = state ? 'Sharded' : 'Non-Sharded';
+        this.dbShardStatusChange.emit(state);
         this.spinner.hide();
       });
   }
 
   private clearFields() {
     this.indexes = [];
-    this.shardKey = [];
     this.selectedCollectionShardKey = '';
   }
 }

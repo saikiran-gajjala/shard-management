@@ -17,14 +17,13 @@ export class ShardsComponent implements OnInit {
   shards: Array<models.Shard> = [];
   showEditChunksDialog = false;
   connectionId: string;
-  autoBalancerStatus: string;
-  selectedAutoBalancerState = false;
-  balancerButtonLabel: string;
   shardKey: models.ShardKey[] = [];
   loopStart: string = '1';
   loopEnd: string = '2';
   selectedDatabase: models.DbMetadata;
+  databaseShardState: boolean = false;
   selectedCollection: models.CollectionMetadata;
+  collectionShardState: boolean = false;
   collectionStats: models.CollectionStats;
   bsonTypes: models.BsonType[] = [
     { name: 'String', value: 'String' },
@@ -32,8 +31,9 @@ export class ShardsComponent implements OnInit {
     { name: 'MaxKey', value: 'MaxKey' },
     { name: 'MinKey', value: 'MaxKey' },
   ];
-  autoRefreshOptions: any[];
+  options: any[];
   autoRefreshOptionSelected: string = 'off';
+  balancerSelected: string = 'off';
   autoRefreshHandler: any;
   constructor(
     private shardManagerService: ShardManagerService,
@@ -42,7 +42,7 @@ export class ShardsComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private activatedRoute: ActivatedRoute
   ) {
-    this.autoRefreshOptions = [
+    this.options = [
       { label: 'Off', value: 'off' },
       { label: 'On', value: 'on' },
     ];
@@ -54,12 +54,23 @@ export class ShardsComponent implements OnInit {
       this.connectionId = res.connectionId;
     });
     this.getAllShards();
+    this.fetchBalancerState();
   }
 
   onSplitChunksClick() {
-    this.spinner.show();
+    if (
+      !this.selectedDatabase ||
+      !this.selectedCollection ||
+      !this.databaseShardState ||
+      !this.collectionShardState
+    ) {
+      this.messageService.add({
+        severity: 'error',
+        detail: 'Please choose valid sharded database and collection!',
+      });
+      return;
+    }
     this.displaySplitChunksDialog(true);
-    this.fetchBalancerState();
   }
 
   displaySplitChunksDialog(flag: boolean) {
@@ -82,12 +93,24 @@ export class ShardsComponent implements OnInit {
     this.collectionStats = collectionStats;
   }
 
+  onShardKeyChange(shardKey: models.ShardKey[]) {
+    this.shardKey = shardKey;
+  }
+
   autoRefresh() {
     if (this.autoRefreshOptionSelected === 'on') {
       this.autoRefreshHandler = setInterval(() => this.getAllShards(), 2000);
     } else {
       clearInterval(this.autoRefreshHandler);
     }
+  }
+
+  onDbShardStatusChange(state: boolean) {
+    this.databaseShardState = state;
+  }
+
+  onCollectionShardStatusChange(state: boolean) {
+    this.collectionShardState = state;
   }
 
   private getAllShards() {
@@ -104,14 +127,11 @@ export class ShardsComponent implements OnInit {
     );
   }
   private fetchBalancerState() {
+    this.spinner.show();
     this.shardManagerService.fetchBalancerState(this.connectionId).subscribe(
       (state: boolean) => {
         this.spinner.hide();
-        this.autoBalancerStatus = state ? 'Enabled' : 'Disabled';
-        this.balancerButtonLabel = state
-          ? 'Disable Balancer'
-          : 'Enable Balancer';
-        this.selectedAutoBalancerState = state;
+        this.balancerSelected = state ? 'on' : 'off';
       },
       (error: HttpErrorResponse) => {
         this.spinner.hide();
@@ -191,20 +211,18 @@ export class ShardsComponent implements OnInit {
   }
 
   modifyBalancerState() {
-    this.selectedAutoBalancerState = !this.selectedAutoBalancerState;
-    const state = this.selectedAutoBalancerState ? 'enable' : 'disable';
+    var newState = this.balancerSelected === 'on';
+    const newStateMsg = newState ? 'enable' : 'disable';
     this.confirmationService.confirm({
-      message: `Are you sure you want to ${state} the auto balancer?`,
+      message: `Are you sure you want to ${newStateMsg} the auto balancer?`,
       header: 'Enable/Disable Auto Balancer',
       accept: () => {
         this.shardManagerService
-          .startStopBalancer(this.selectedAutoBalancerState, this.connectionId)
+          .startStopBalancer(newState, this.connectionId)
           .subscribe(
             (state: boolean) => {
               this.spinner.hide();
-              const stateMsg = this.selectedAutoBalancerState
-                ? 'Enabled'
-                : 'Disabled';
+              const stateMsg = newState ? 'Enabled' : 'Disabled';
               if (state) {
                 this.messageService.add({
                   severity: 'success',

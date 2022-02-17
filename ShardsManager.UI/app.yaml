@@ -1,0 +1,44 @@
+runtime: python27
+api_version: 1
+threadsafe: yes
+service: shard-management-ui
+
+handlers:
+  - url: /(.*\.(js|css|svg|png|woff|woff2|ttf|eot)(|\.map))$
+    static_files: dist/\1
+    upload: dist/(.*)(|\.map)
+  - url: /.*
+    static_files: dist/index.html
+    upload: dist/.*
+    secure: always
+    redirect_http_response_code: 301
+  - url: /
+    static_dir: dist
+    secure: always
+    redirect_http_response_code: 301
+  - url: /(.*\.ttf)
+    mime_type: font/truetype
+    static_files: dist/\1
+    upload: dist/(.*\.ttf)
+  - url: /(.*\.woff)
+    mime_type: application/x-font-woff
+    static_files: dist/\1
+    upload: dist/(.*\.woff)
+  - url: /(.*\.woff2)
+    mime_type: application/x-font-woff2
+    static_files: dist/\1
+    upload: dist/(.*\.woff2)
+  - url: /(.*\.eot)
+    mime_type: application/vnd.ms-fontobject
+    static_files: dist/\1
+    upload: dist/(.*\.eot)
+
+skip_files:
+  - e2e/
+  - node_modules/
+  - src/
+  - ^(.*/)?\..*$
+  - ^(.*/)?.*\.json$
+  - ^(.*/)?.*\.md$
+  - ^(.*/)?.*\.yaml$
+  - ^LICENSE

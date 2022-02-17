@@ -41,7 +41,8 @@
             "scripts": [
               "./node_modules/jquery/dist/jquery.min.js",
               "./node_modules/popper.js/dist/umd/popper.min.js",
-              "./node_modules/bootstrap/dist/js/bootstrap.min.js"
+              "./node_modules/bootstrap/dist/js/bootstrap.min.js",
+              "src/assets/env.js"
             ]
           },
           "configurations": {
@@ -104,10 +105,8 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
-            "scripts": [],
-            "styles": [
-              "src/main.scss"
-            ],
+            "scripts": ["src/assets/env.js"],
+            "styles": ["src/main.scss"],
             "assets": [
               "src/favicon.ico",
               "src/apple-touch-icon.png",
@@ -130,9 +129,7 @@
               "tsconfig.spec.json",
               "e2e/tsconfig.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         },
         "e2e": {

@@ -12,4 +12,5 @@ export const environment = {
   serverUrl: 'https://api.chucknorris.io',
   defaultLanguage: 'en-US',
   supportedLanguages: ['en-US'],
+  apiUrl: 'https://shard-management-api-dot-onedata-mvp.uc.r.appspot.com',
 };

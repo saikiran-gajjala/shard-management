@@ -13,6 +13,8 @@ export class ShardsGridViewComponent implements OnInit {
   @Input() collectionStats: models.CollectionStats;
   @Input() database: string;
   @Input() collection: string;
+  @Input() databaseShardState: boolean = false;
+  @Input() collectionShardState: boolean = false;
   constructor() {}
 
   ngOnInit(): void {}

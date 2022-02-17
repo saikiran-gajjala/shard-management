@@ -1,0 +1,6 @@
+services:
+  cosmosui:
+    build: .
+    ports:
+      - '127.0.0.1:4300:80'
+    environment: # API_URL: 'https://cosmostomongo-dev.azurewebsites.net'

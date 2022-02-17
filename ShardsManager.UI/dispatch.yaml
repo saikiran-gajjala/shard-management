@@ -1,0 +1,13 @@
+dispatch:
+  - url: msizer2.tools.peerislands.io/*
+    service: msizer
+  - url: mschemagen.tools.peerislands.io/*
+    service: schema-mapper
+  - url: cosmos2mongo.tools.peerislands.io/*
+    service: cosmos2mongo-ui
+  - url: onedata.tools.peerislands.io/*
+    service: onedata-ui
+  - url: signin.tools.peerislands.io/*
+    service: mtools
+  - url: shardmanagement.tools.peerislands.io/*
+    service: shard-management-ui

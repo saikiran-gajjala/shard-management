@@ -1,0 +1,17 @@
+.git
+
+.firebase
+
+.editorconfig
+
+/nodemodules
+
+/e2e
+
+/docs
+
+.gitignore
+
+*.zip
+
+*.md

@@ -1,0 +1,8 @@
+version: "3.4"
+
+services:
+  shardsmanager.api:
+    image: ${DOCKER_REGISTRY-}shardsmanager
+    build:
+      context: .
+      dockerfile: ShardsManager.API/Dockerfile
